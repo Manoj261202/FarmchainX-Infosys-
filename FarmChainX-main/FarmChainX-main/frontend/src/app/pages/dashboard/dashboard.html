@@ -1,0 +1,191 @@
+<style>
+  /* Import Modern Font */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+  * {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.9s ease-out;
+  }
+
+  .fade-in-delay {
+    animation: fadeIn 0.9s ease-out 0.25s backwards;
+  }
+
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 25px 35px -5px rgba(132, 204, 22, 0.15),
+      0 10px 15px -5px rgba(132, 204, 22, 0.08);
+  }
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-yellow-50 via-lime-50 to-yellow-100">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Welcome Section -->
+    <div class="fade-in mb-12">
+      <div class="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl border border-lime-200 overflow-hidden">
+
+        <!-- Gradient Header -->
+        <div class="bg-gradient-to-r from-lime-600 via-green-600 to-lime-500 px-8 py-14 sm:px-12 sm:py-16">
+          <div class="max-w-3xl">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4">
+              Welcome back,
+              <span class="text-yellow-200 italic tracking-wide">
+                {{ name }}
+              </span>
+            </h1>
+            <p class="text-xl text-lime-100 font-medium">
+              Manage your supply chain with clarity and confidence.
+            </p>
+          </div>
+        </div>
+
+        <!-- Role Badge -->
+        <div class="px-8 py-8 sm:px-12 bg-yellow-50 border-t border-lime-200">
+          <div class="flex items-center justify-between flex-wrap gap-4">
+            <div>
+              <p class="text-sm text-lime-700 uppercase tracking-wider font-semibold mb-2">
+                Current Role
+              </p>
+              <div class="inline-flex items-center gap-3 px-6 py-3 bg-white border border-lime-300 shadow-sm rounded-full">
+                <span class="w-2.5 h-2.5 bg-lime-500 rounded-full animate-pulse"></span>
+                <span class="text-lime-800 font-bold text-lg">{{ role }}</span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 text-sm">
+              <div class="w-2 h-2 bg-lime-500 rounded-full"></div>
+              <span class="text-lime-700 font-semibold">Online</span>
+              <span class="text-gray-400">•</span>
+              <span class="text-lime-800 font-semibold">FarmChainX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role Based Panel -->
+    <div *ngIf="panelConfig" class="fade-in-delay mb-12">
+      <a
+        [routerLink]="panelConfig.route"
+        class="block card-hover bg-gradient-to-r from-lime-600 via-green-600 to-lime-500 rounded-2xl shadow-2xl border border-lime-300/40 p-10 group"
+      >
+        <div class="flex items-center justify-between">
+          <div class="flex items-start gap-6">
+            <div
+              class="flex-shrink-0 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center"
+            >
+              <svg
+                class="w-9 h-9 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </div>
+
+            <div>
+              <h3
+                class="text-3xl font-extrabold text-white mb-2 group-hover:text-yellow-100 transition-colors"
+              >
+                {{ panelConfig.label }}
+              </h3>
+              <p class="text-lime-100 font-semibold text-lg">
+                {{ panelConfig.subtitle }}
+              </p>
+            </div>
+          </div>
+
+          <svg
+            class="w-8 h-8 text-white group-hover:translate-x-2 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </div>
+      </a>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="fade-in-delay mt-12">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-emerald-100 p-6 text-center">
+          <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+          <h4 class="font-bold text-gray-900 mb-1">Secure</h4>
+          <p class="text-sm text-gray-600">End-to-end encryption</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-emerald-100 p-6 text-center">
+          <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M2 11h4v5H2zM8 7h4v9H8zM14 4h4v12h-4z"
+              />
+            </svg>
+          </div>
+          <h4 class="font-bold text-gray-900 mb-1">Transparent</h4>
+          <p class="text-sm text-gray-600">Real-time tracking</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-emerald-100 p-6 text-center">
+          <div class="inline-flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-full mb-4">
+            <svg class="w-6 h-6 text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M5 3a7 7 0 0110 0l1 1-6 6-6-6 1-1z"
+                clip-rule="evenodd" />
+            </svg>
+          </div>
+          <h4 class="font-bold text-gray-900 mb-1">Verified</h4>
+          <p class="text-sm text-gray-600">Trusted ecosystem</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-16 text-center">
+      <p class="text-sm text-lime-800 font-medium tracking-wide">
+        © 2025 FarmChainX • Transparent Food Supply Chain
+      </p>
+    </div>
+
+  </div>
+</div>
