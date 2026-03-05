@@ -65,11 +65,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/farmer/farmer-dashboard/farmer-dashboard').then((m) => m.FarmerDashboard),
       },
-      {
-        path: 'settings',
-        loadComponent: () =>
-          import('./pages/admin/admin-settings/admin-settings').then((m) => m.AdminSettings),
-      },
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
@@ -118,6 +114,13 @@ export const routes: Routes = [
             (m) => m.ConsumerMarketplaceComponent,
           ),
       },
+      {
+        path: 'verify',
+        loadComponent: () =>
+          import('./pages/consumer/consumer-verify/consumer-verify-page.component').then(
+            (m) => m.ConsumerVerifyPageComponent,
+          ),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
@@ -151,9 +154,9 @@ export const routes: Routes = [
       { path: '', redirectTo: 'overview', pathMatch: 'full' },
     ],
   },
-  // =======================
+
   // DISTRIBUTOR ROUTES
-  // =======================
+
   {
     path: 'distributor',
     canActivate: [AuthGuard],
@@ -162,13 +165,7 @@ export const routes: Routes = [
         (m) => m.DistributorLayoutComponent,
       ),
     children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
-
-      // Dashboard
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
         path: 'dashboard',
         loadComponent: () =>
@@ -177,7 +174,7 @@ export const routes: Routes = [
           ),
       },
 
-      // Profile
+
       {
         path: 'profile',
         loadComponent: () =>
@@ -186,7 +183,7 @@ export const routes: Routes = [
           ),
       },
 
-      // Farmer Procurement
+
       {
         path: 'farmer-procurement',
         loadComponent: () =>
@@ -195,7 +192,7 @@ export const routes: Routes = [
           ),
       },
 
-      // Procurement Detail
+
       {
         path: 'procurement-detail',
         loadComponent: () =>
@@ -204,7 +201,7 @@ export const routes: Routes = [
           ),
       },
 
-      // Inventory
+
       {
         path: 'inventory',
         loadComponent: () =>
@@ -212,8 +209,8 @@ export const routes: Routes = [
             (m) => m.InventoryComponent,
           ),
       },
+      
 
-      // Dispatch
       {
         path: 'dispatch',
         loadComponent: () =>
@@ -222,7 +219,7 @@ export const routes: Routes = [
           ),
       },
 
-      // Retailer Selection
+
       {
         path: 'retailer-selection',
         loadComponent: () =>
@@ -233,8 +230,7 @@ export const routes: Routes = [
     ],
   },
 
-  // RETAILER ROUTES (placed under src/app/pages/retailer/*)
-  // Parent route uses AuthGuard so only authenticated users can access retailer panel.
+  // RETAILER ROUTES
   {
     path: 'retailer',
     canActivate: [AuthGuard],
@@ -243,11 +239,7 @@ export const routes: Routes = [
         (m) => m.RetailerLayoutComponent,
       ),
     children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'dashboard',
-      },
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       {
         path: 'dashboard',
         loadComponent: () =>
