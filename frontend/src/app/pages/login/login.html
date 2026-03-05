@@ -1,0 +1,303 @@
+<!-- NOTIFICATION POPUP -->
+<div
+  *ngIf="notification"
+  class="fixed top-6 right-6 z-50 min-w-[300px] max-w-sm rounded-2xl px-5 py-4 shadow-2xl transition-all duration-500"
+  [style.background]="notification.type === 'success' ? 'rgba(3,40,15,0.95)' : 'rgba(40,5,5,0.95)'"
+  [style.border]="
+    notification.type === 'success'
+      ? '1px solid rgba(74,222,128,0.4)'
+      : '1px solid rgba(239,68,68,0.4)'
+  "
+  style="backdrop-filter: blur(20px)"
+>
+  <div class="flex items-start gap-3">
+    <div
+      class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+      [style.background]="
+        notification.type === 'success' ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'
+      "
+    >
+      {{ notification.type === 'success' ? '🌿' : '⚠️' }}
+    </div>
+    <div>
+      <div class="font-black text-white text-sm mb-0.5">{{ notification.title }}</div>
+      <div class="text-xs" [style.color]="notification.type === 'success' ? '#86efac' : '#fca5a5'">
+        {{ notification.message }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="mt-3 h-1 rounded-full overflow-hidden" style="background: rgba(255, 255, 255, 0.1)">
+    <div
+      class="h-full rounded-full notify-progress"
+      [style.background]="notification.type === 'success' ? '#22c55e' : '#ef4444'"
+    ></div>
+  </div>
+</div>
+
+<div
+  class="min-h-screen flex flex-col justify-between relative overflow-hidden"
+  style="
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 30, 10, 0.6) 0%,
+        rgba(0, 20, 8, 0.5) 40%,
+        rgba(0, 15, 6, 0.8) 85%,
+        rgba(0, 10, 4, 0.97) 100%
+      ),
+      url('farmpic1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  "
+>
+  <!-- Glow blobs -->
+  <div
+    class="absolute top-0 left-0 w-96 h-96 rounded-full pointer-events-none z-0"
+    style="
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, transparent 65%);
+      transform: translate(-30%, -30%);
+    "
+  ></div>
+  <div
+    class="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none z-0"
+    style="
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 65%);
+      transform: translate(30%, 30%);
+    "
+  ></div>
+
+  <!-- CENTER — Floating Login Box -->
+  <div class="flex-1 flex items-center justify-center px-4 py-12 relative z-10">
+    <div class="w-full max-w-md login-float">
+      <div
+        class="rounded-3xl p-10"
+        style="
+          background: rgba(3, 18, 8, 0.75);
+          border: 1px solid rgba(74, 222, 128, 0.25);
+          box-shadow:
+            0 40px 100px rgba(0, 0, 0, 0.65),
+            inset 0 1px 0 rgba(255, 255, 255, 0.07);
+          backdrop-filter: blur(32px);
+          -webkit-backdrop-filter: blur(32px);
+        "
+      >
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <div
+            class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4"
+            style="
+              background: linear-gradient(135deg, #22c55e, #14532d);
+              box-shadow: 0 8px 28px rgba(34, 197, 94, 0.45);
+            "
+          >
+            🌿
+          </div>
+          <h2 class="text-2xl font-black text-white mb-1">Welcome Back</h2>
+          <p class="text-sm" style="color: rgba(255, 255, 255, 0.35)">
+            Sign in to your FarmChainX dashboard
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form (ngSubmit)="login()" #f="ngForm" autocomplete="off">
+          <div class="mb-4">
+            <label
+              class="block text-xs font-black mb-2 uppercase tracking-widest"
+              style="color: #86efac; letter-spacing: 0.1em"
+              >Email Address</label
+            >
+            <input
+              class="w-full rounded-xl px-4 py-3.5 text-sm text-white outline-none transition-all duration-200"
+              style="
+                background: rgba(255, 255, 255, 0.07);
+                border: 1.5px solid rgba(74, 222, 128, 0.2);
+                color: white;
+              "
+              name="email"
+              type="email"
+              placeholder="your.email@example.com"
+              [(ngModel)]="email"
+              required
+            />
+          </div>
+
+          <div class="mb-6">
+            <label
+              class="block text-xs font-black mb-2 uppercase tracking-widest"
+              style="color: #86efac; letter-spacing: 0.1em"
+              >Password</label
+            >
+            <div class="relative">
+              <input
+                class="w-full rounded-xl px-4 py-3.5 pr-12 text-sm text-white outline-none transition-all duration-200"
+                style="
+                  background: rgba(255, 255, 255, 0.07);
+                  border: 1.5px solid rgba(74, 222, 128, 0.2);
+                  color: white;
+                "
+                name="password"
+                [type]="showPassword ? 'text' : 'password'"
+                placeholder="••••••••"
+                [(ngModel)]="password"
+                required
+              />
+              <button
+                type="button"
+                (click)="showPassword = !showPassword"
+                class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg transition-all duration-200"
+                style="background: rgba(255, 255, 255, 0.08); border: none; cursor: pointer"
+              >
+                <svg
+                  *ngIf="!showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="rgba(255,255,255,0.5)"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                <svg
+                  *ngIf="showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="rgba(255,255,255,0.5)"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            [disabled]="f.invalid"
+            class="w-full text-white font-black text-base py-4 rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            style="
+              background: linear-gradient(135deg, #22c55e, #15803d);
+              box-shadow: 0 6px 28px rgba(34, 197, 94, 0.4);
+            "
+          >
+            Sign In to Dashboard
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 my-5">
+          <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.08)"></div>
+          <span class="text-xs" style="color: rgba(255, 255, 255, 0.2)">or</span>
+          <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.08)"></div>
+        </div>
+
+        <!-- Register -->
+        <p class="text-center text-xs mb-3" style="color: rgba(255, 255, 255, 0.28)">
+          New to FarmChainX?
+        </p>
+
+        <a
+          routerLink="/register"
+          class="block text-center py-3.5 rounded-xl font-bold text-sm transition-all duration-200"
+          style="
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(74, 222, 128, 0.18);
+            color: #86efac;
+          "
+        >
+          Create Free Account →
+        </a>
+
+        <!-- Secure note -->
+        <p class="text-center mt-4 text-xs" style="color: rgba(255, 255, 255, 0.2)">
+          🔒 Secured by FarmChainX Technology
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM QUOTE -->
+  <div
+    class="relative z-10 text-center py-6 px-8"
+    style="
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(3, 14, 6, 0.92) 20%,
+        rgba(3, 14, 6, 0.92) 80%,
+        transparent
+      );
+      border-top: 1px solid rgba(74, 222, 128, 0.1);
+    "
+  >
+    <div class="text-xl mb-2">🌾</div>
+    <p
+      class="text-sm italic mb-2"
+      style="font-family: Georgia, serif; color: rgba(255, 255, 255, 0.55); line-height: 1.75"
+    >
+      "Agriculture is not just a profession — it is the
+      <span style="color: #86efac; font-style: normal; font-weight: 700"
+        >foundation of civilization</span
+      >,<br />
+      the roots from which all life and prosperity grow."
+    </p>
+    <p class="text-xs font-bold uppercase tracking-widest" style="color: rgba(255, 255, 255, 0.25)">
+      — The Spirit of Every Farmer &nbsp;🌿
+    </p>
+  </div>
+</div>
+
+<style>
+  @keyframes floatCard {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+  }
+  .login-float {
+    animation: floatCard 5s ease-in-out infinite;
+  }
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.2) !important;
+  }
+  @keyframes notifyProgress {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+  .notify-progress {
+    animation: notifyProgress 3.5s linear forwards;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(3, 18, 8, 0.95) inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white !important;
+  }
+</style>

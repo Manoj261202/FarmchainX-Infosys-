@@ -1,0 +1,311 @@
+<nav
+  class="sticky top-0 left-0 w-full z-50 transition-all duration-500"
+  [ngClass]="{
+    'bg-white/95 backdrop-blur-xl shadow-md border-b border-gray-200': isScrolled,
+    'bg-gradient-to-r from-[#0a1a0f] to-[#14532d] border-b border-[rgba(74,222,128,0.15)]':
+      !isScrolled,
+  }"
+>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex items-center justify-between h-[70px]">
+      <!-- LOGO -->
+      <a routerLink="/" class="flex items-center gap-3">
+        <div
+          class="w-9 h-9 rounded-xl flex items-center justify-center text-xl"
+          [ngClass]="{
+            'bg-gradient-to-br from-green-600 to-green-800 shadow-[0_4px_12px_rgba(22,163,74,0.4)]': true,
+          }"
+        >
+          🌿
+        </div>
+        <div
+          class="font-black text-2xl tracking-tight transition-all duration-500"
+          [ngClass]="{
+            'bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent':
+              isScrolled,
+            'bg-gradient-to-r from-green-300 to-green-400 bg-clip-text text-transparent':
+              !isScrolled,
+          }"
+        >
+          FarmChainX
+        </div>
+      </a>
+
+      <!-- DESKTOP LINKS -->
+      <div class="hidden md:flex items-center gap-3">
+        <ng-container *ngIf="!isLoggedIn">
+          <a
+            routerLink="/login"
+            class="px-6 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 border"
+            [ngClass]="{
+              'border-gray-300 text-gray-700 hover:border-green-500 hover:text-green-700':
+                isScrolled,
+              'border-white/20 text-white/80 hover:bg-white/10': !isScrolled,
+            }"
+          >
+            Login
+          </a>
+          <a
+            routerLink="/register"
+            class="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-700 text-white rounded-xl font-bold text-sm shadow-[0_4px_14px_rgba(34,197,94,0.35)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(34,197,94,0.45)] transition-all duration-200"
+          >
+            Register
+          </a>
+        </ng-container>
+
+        <ng-container *ngIf="isLoggedIn">
+          <!-- Scan button -->
+          <a
+            routerLink="/scanner"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200"
+            [ngClass]="{
+              'bg-green-50 border border-green-200 text-green-700 hover:bg-green-100': isScrolled,
+              'bg-[rgba(74,222,128,0.1)] border border-[rgba(74,222,128,0.25)] text-green-300 hover:bg-[rgba(74,222,128,0.18)]':
+                !isScrolled,
+            }"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 7v4a1 1 0 001 1h4M21 7v4a1 1 0 01-1 1h-4M3 17v-4a1 1 0 011-1h4M21 17v-4a1 1 0 00-1-1h-4"
+              />
+            </svg>
+            Scan QR
+          </a>
+
+          <ng-container *ngIf="isFarmer">
+            <a
+              routerLink="/upload"
+              class="text-sm font-semibold transition-all duration-200"
+              [ngClass]="{
+                'text-gray-600 hover:text-green-700': isScrolled,
+                'text-white/70 hover:text-white': !isScrolled,
+              }"
+            >
+              Upload
+            </a>
+            <a
+              routerLink="/products/my"
+              class="text-sm font-semibold transition-all duration-200"
+              [ngClass]="{
+                'text-gray-600 hover:text-green-700': isScrolled,
+                'text-white/70 hover:text-white': !isScrolled,
+              }"
+            >
+              My Products
+            </a>
+          </ng-container>
+
+          <a
+            *ngIf="isAdmin"
+            routerLink="/admin"
+            class="px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl font-bold text-sm shadow-lg hover:scale-105 transition-all duration-200"
+          >
+            Admin
+          </a>
+
+          <!-- User Avatar -->
+          <div class="relative">
+            <button (click)="toggleUserMenu()" class="flex items-center gap-2">
+              <div
+                class="w-9 h-9 rounded-full flex items-center justify-center font-black text-sm"
+                [ngClass]="{
+                  'bg-gradient-to-br from-green-500 to-green-700 text-white': true,
+                }"
+              >
+                {{ userName?.charAt(0)?.toUpperCase() }}
+              </div>
+            </button>
+
+            <!-- Dropdown -->
+            <div
+              *ngIf="userMenuOpen"
+              class="absolute right-0 mt-3 w-60 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+            >
+              <div
+                class="px-4 py-4 bg-gradient-to-r from-green-50 to-emerald-50 border-b border-gray-100"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-11 h-11 rounded-full bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center font-black text-lg"
+                  >
+                    {{ (userName?.charAt(0) || 'U').toUpperCase() }}
+                  </div>
+                  <div>
+                    <p class="font-bold text-gray-900 text-sm">{{ userName }}</p>
+                    <p class="text-xs text-green-600 font-semibold mt-0.5">{{ userRole }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="py-2">
+                <a
+                  routerLink="/profile"
+                  (click)="toggleUserMenu()"
+                  class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-medium"
+                  >👤 View Profile</a
+                >
+                <a
+                  routerLink="/settings"
+                  (click)="toggleUserMenu()"
+                  class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 font-medium"
+                  >⚙️ Settings</a
+                >
+              </div>
+              <div class="px-4 py-3 border-t border-gray-100">
+                <button
+                  (click)="logout(); toggleUserMenu()"
+                  class="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-200"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- MOBILE MENU BUTTON -->
+      <button
+        (click)="toggleMobileMenu()"
+        class="md:hidden p-2 rounded-lg transition-all duration-200"
+        [ngClass]="{ 'text-gray-700': isScrolled, 'text-white': !isScrolled }"
+      >
+        <svg
+          *ngIf="!mobileMenuOpen"
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+        <svg
+          *ngIf="mobileMenuOpen"
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="6" y1="18" x2="18" y2="6" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div
+    *ngIf="mobileMenuOpen"
+    class="md:hidden border-t"
+    [ngClass]="{
+      'bg-white border-gray-200': isScrolled,
+      'bg-[#0a1a0f] border-[rgba(74,222,128,0.15)]': !isScrolled,
+    }"
+  >
+    <div class="px-6 py-4 space-y-2">
+      <ng-container *ngIf="!isLoggedIn">
+        <a
+          routerLink="/login"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-semibold text-sm text-center border transition-all duration-200"
+          [ngClass]="{
+            'border-gray-200 text-gray-700 hover:bg-gray-50': isScrolled,
+            'border-white/15 text-white/80 hover:bg-white/5': !isScrolled,
+          }"
+          >Login</a
+        >
+        <a
+          routerLink="/register"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-bold text-sm text-center bg-gradient-to-r from-green-500 to-green-700 text-white shadow-lg"
+        >
+          Register
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="isLoggedIn">
+        <div
+          class="flex items-center gap-3 px-2 py-3 border-b mb-2"
+          [ngClass]="{ 'border-gray-100': isScrolled, 'border-white/10': !isScrolled }"
+        >
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center font-black"
+          >
+            {{ (userName?.charAt(0) || 'U').toUpperCase() }}
+          </div>
+          <div>
+            <p
+              class="font-bold text-sm"
+              [ngClass]="{ 'text-gray-900': isScrolled, 'text-white': !isScrolled }"
+            >
+              {{ userName }}
+            </p>
+            <p class="text-xs text-green-500 font-semibold">{{ userRole }}</p>
+          </div>
+        </div>
+
+        <a
+          routerLink="/scanner"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
+          [ngClass]="{
+            'text-gray-700 hover:bg-gray-50': isScrolled,
+            'text-white/80 hover:bg-white/5': !isScrolled,
+          }"
+        >
+          📷 Scan QR
+        </a>
+        <a
+          *ngIf="isFarmer"
+          routerLink="/upload"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
+          [ngClass]="{
+            'text-gray-700 hover:bg-gray-50': isScrolled,
+            'text-white/80 hover:bg-white/5': !isScrolled,
+          }"
+        >
+          🌾 Upload Product
+        </a>
+        <a
+          *ngIf="isFarmer"
+          routerLink="/products/my"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
+          [ngClass]="{
+            'text-gray-700 hover:bg-gray-50': isScrolled,
+            'text-white/80 hover:bg-white/5': !isScrolled,
+          }"
+        >
+          📦 My Products
+        </a>
+        <a
+          *ngIf="isAdmin"
+          routerLink="/admin"
+          (click)="closeMobileMenu()"
+          class="block px-4 py-3 rounded-xl font-bold text-sm text-center bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl"
+        >
+          🛡️ Admin Panel
+        </a>
+
+        <div
+          class="pt-2 border-t"
+          [ngClass]="{ 'border-gray-100': isScrolled, 'border-white/10': !isScrolled }"
+        >
+          <button
+            (click)="logout(); closeMobileMenu()"
+            class="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200"
+          >
+            Logout
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</nav>

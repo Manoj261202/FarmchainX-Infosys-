@@ -1,0 +1,86 @@
+<div style="min-height: 100%; background: transparent">
+  <!-- Page Header -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        📋
+      </div>
+      <h2 class="text-2xl font-black text-white">System Logs</h2>
+    </div>
+    <p class="text-sm" style="color: rgba(255, 255, 255, 0.35)">
+      Audit trail of supply chain activities and system events
+    </p>
+  </div>
+
+  <!-- Table -->
+  <div
+    class="rounded-2xl overflow-hidden"
+    style="background: rgba(3, 18, 8, 0.6); border: 1px solid rgba(74, 222, 128, 0.12)"
+  >
+    <!-- Table Header -->
+    <div
+      class="grid grid-cols-5 px-5 py-3"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.1)"
+    >
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Timestamp
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Action
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Product ID
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Actor ID
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Details
+      </div>
+    </div>
+
+    <!-- Log Rows -->
+    <div
+      *ngFor="let log of logs"
+      class="grid grid-cols-5 px-5 py-3 items-center transition-all duration-200"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.06)"
+    >
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.45)">
+        {{ log.timestamp | date: 'short' }}
+      </div>
+      <div class="text-xs font-bold" style="color: #86efac">{{ log.action }}</div>
+      <div class="text-xs font-mono" style="color: rgba(255, 255, 255, 0.4)">
+        {{ log.productId }}
+      </div>
+      <div class="text-xs font-mono" style="color: rgba(255, 255, 255, 0.4)">{{ log.actorId }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.3)">{{ log.details }}</div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!logs || logs.length === 0" class="text-center py-20">
+      <div class="text-5xl mb-4 opacity-20">📋</div>
+      <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.3)">No system logs found</p>
+      <p class="text-xs mt-2" style="color: rgba(255, 255, 255, 0.2)">
+        Activity logs will appear here as events occur
+      </p>
+    </div>
+  </div>
+</div>
