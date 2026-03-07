@@ -1,0 +1,291 @@
+<div class="min-h-screen pb-12" style="background: transparent">
+  <!-- Header -->
+  <div class="mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        🌾
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">My Products</h2>
+        <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">
+          Manage your verified agricultural products
+        </p>
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <div
+        class="rounded-xl px-4 py-3"
+        style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+      >
+        <p
+          class="text-xs font-black uppercase tracking-wider"
+          style="color: rgba(255, 255, 255, 0.35)"
+        >
+          Total Uploads
+        </p>
+        <div class="flex items-baseline gap-2 mt-0.5">
+          <span class="text-2xl font-black text-white">{{ totalItems || 0 }}</span>
+          <span
+            class="text-xs font-black px-2 py-0.5 rounded-full"
+            style="background: rgba(34, 197, 94, 0.1); color: #4ade80"
+            >Items</span
+          >
+        </div>
+      </div>
+      <div
+        class="rounded-xl px-4 py-3"
+        style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+      >
+        <p
+          class="text-xs font-black uppercase tracking-wider"
+          style="color: rgba(255, 255, 255, 0.35)"
+        >
+          Verified
+        </p>
+        <div class="flex items-baseline gap-2 mt-0.5">
+          <span class="text-2xl font-black" style="color: #4ade80">{{ products.length }}</span>
+          <span
+            class="text-xs font-black px-2 py-0.5 rounded-full"
+            style="background: rgba(34, 197, 94, 0.1); color: #4ade80"
+            >Active</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
+    <div
+      class="animate-spin rounded-full h-10 w-10 border-4 border-t-transparent mb-4"
+      style="border-color: rgba(74, 222, 128, 0.3); border-top-color: #4ade80"
+    ></div>
+    <p class="text-sm" style="color: rgba(255, 255, 255, 0.4)">Retrieving your products...</p>
+  </div>
+
+  <!-- Retry Message -->
+  <div
+    *ngIf="retryMessage"
+    class="rounded-2xl p-4 mb-4"
+    style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(253, 224, 71, 0.25)"
+  >
+    <p class="text-xs font-bold" style="color: #fde047">⚠️ {{ retryMessage }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && products.length === 0"
+    class="text-center py-16 rounded-2xl"
+    style="background: rgba(3, 18, 8, 0.5); border: 1px dashed rgba(74, 222, 128, 0.2)"
+  >
+    <div class="text-4xl mb-3">📦</div>
+    <h3 class="font-black text-white text-sm mb-1">No Products Yet</h3>
+    <p class="text-xs mb-5" style="color: rgba(255, 255, 255, 0.3)">
+      Register your first harvest to start building your blockchain-verified history.
+    </p>
+    <button
+      routerLink="/upload"
+      class="px-5 py-2.5 rounded-xl text-xs font-black text-white transition-all"
+      style="background: linear-gradient(135deg, #22c55e, #15803d)"
+    >
+      Register New Product
+    </button>
+  </div>
+
+  <!-- Products Grid -->
+  <div
+    *ngIf="!loading && products.length > 0"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+  >
+    <div
+      *ngFor="let p of products"
+      class="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <!-- Image -->
+      <div class="relative h-52">
+        <img
+          *ngIf="p.imagePath"
+          [src]="getImageUrl(p.imagePath)"
+          [alt]="p.cropName"
+          class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+        />
+        <div
+          *ngIf="!p.imagePath"
+          class="w-full h-full flex items-center justify-center text-6xl"
+          style="background: rgba(34, 197, 94, 0.05)"
+        >
+          {{ getCropEmoji(p.cropName) }}
+        </div>
+
+        <!-- Overlay -->
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(to top, rgba(3, 18, 8, 0.8) 0%, transparent 60%)"
+        ></div>
+
+        <!-- Badges -->
+        <div class="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
+          <div
+            class="px-2 py-1 rounded-lg text-center min-w-[48px]"
+            style="background: rgba(3, 18, 8, 0.9); border: 1px solid rgba(74, 222, 128, 0.3)"
+          >
+            <p class="text-xs font-black uppercase" style="color: rgba(255, 255, 255, 0.4)">
+              Grade
+            </p>
+            <p class="text-base font-black" style="color: #4ade80">{{ p.qualityGrade || 'A+' }}</p>
+          </div>
+          <span
+            class="text-xs font-black px-2 py-1 rounded-lg"
+            style="
+              background: rgba(34, 197, 94, 0.2);
+              color: #4ade80;
+              border: 1px solid rgba(74, 222, 128, 0.3);
+            "
+          >
+            ✅ Verified
+          </span>
+        </div>
+
+        <!-- Bottom Info -->
+        <div class="absolute bottom-3 left-3">
+          <h3 class="text-lg font-black text-white">{{ p.cropName | titlecase }}</h3>
+          <p class="text-xs" style="color: rgba(255, 255, 255, 0.5)">
+            Harvested {{ formatDate(p.harvestDate) }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="p-4">
+        <div
+          class="flex items-center justify-between mb-3 pb-3"
+          style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)"
+        >
+          <div>
+            <p class="text-xs" style="color: rgba(255, 255, 255, 0.3)">Product ID</p>
+            <p class="text-xs font-black font-mono text-white">#{{ p.id }}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs" style="color: rgba(255, 255, 255, 0.3)">Registered By</p>
+            <p class="text-xs font-black text-white">{{ p.farmer?.name || 'You' }}</p>
+          </div>
+        </div>
+
+        <!-- QR Section -->
+        <div
+          class="rounded-xl p-3 mb-3"
+          style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(74, 222, 128, 0.08)"
+        >
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-black" style="color: rgba(255, 255, 255, 0.3)"
+              >🔐 Digital Passport</span
+            >
+            <span
+              *ngIf="p.qrCodePath"
+              class="text-xs font-black px-2 py-0.5 rounded-full"
+              style="background: rgba(34, 197, 94, 0.1); color: #4ade80"
+              >Active</span
+            >
+          </div>
+
+          <div *ngIf="p.qrCodePath" class="flex flex-col items-center py-2">
+            <div
+              class="p-2 rounded-xl cursor-pointer hover:scale-105 transition-transform"
+              style="background: white"
+              (click)="viewQr(p.id)"
+            >
+              <img [src]="getQrImageUrl(p.id)" alt="QR Code" class="w-20 h-20 object-contain" />
+            </div>
+            <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.25)">
+              Scan for provenance history
+            </p>
+            <div class="mt-2 flex items-center gap-1.5 px-3 py-1 rounded-full" style="background: rgba(34,197,94,0.1); border: 1px solid rgba(74,222,128,0.2)">
+              <span style="color: #4ade80">📊</span>
+              <span class="text-xs font-black" style="color: #4ade80">{{ p.scanCount || 0 }}</span>
+              <span class="text-xs" style="color: rgba(255,255,255,0.4)">scans</span>
+            </div>
+          </div>
+
+          <div *ngIf="!p.qrCodePath" class="flex flex-col items-center py-4">
+            <p class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Passport not generated</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div *ngIf="!p.qrCodePath">
+          <button
+            (click)="generateQr(p.id); $event.stopPropagation()"
+            class="w-full py-2.5 rounded-xl text-xs font-black text-white transition-all"
+            style="background: linear-gradient(135deg, #22c55e, #15803d)"
+          >
+            ⚡ Create Digital Passport
+          </button>
+        </div>
+        <div *ngIf="p.qrCodePath" class="grid grid-cols-2 gap-2">
+          <button
+            (click)="downloadQr(p.id); $event.stopPropagation()"
+            class="py-2.5 rounded-xl text-xs font-black transition-all"
+            style="
+              background: rgba(34, 197, 94, 0.1);
+              border: 1px solid rgba(74, 222, 128, 0.2);
+              color: #4ade80;
+            "
+          >
+            📥 Save
+          </button>
+          <button
+            (click)="viewQr(p.qrCodePath); $event.stopPropagation()"
+            class="py-2.5 rounded-xl text-xs font-black transition-all"
+            style="
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              color: rgba(255, 255, 255, 0.6);
+            "
+          >
+            👁️ View
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div
+    *ngIf="!loading && totalPages > 1"
+    class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
+    style="border-top: 1px solid rgba(74, 222, 128, 0.1)"
+  >
+    <button
+      (click)="prevPage()"
+      [disabled]="page === 0"
+      class="px-5 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-40"
+      style="
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        color: rgba(255, 255, 255, 0.6);
+      "
+    >
+      ← Previous
+    </button>
+    <span class="text-xs" style="color: rgba(255, 255, 255, 0.4)">
+      Page <span class="text-white font-black">{{ page + 1 }}</span> of
+      <span class="text-white font-black">{{ totalPages }}</span>
+    </span>
+    <button
+      (click)="nextPage()"
+      [disabled]="page >= totalPages - 1"
+      class="px-5 py-2.5 rounded-xl text-xs font-black transition-all disabled:opacity-40"
+      style="
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        color: rgba(255, 255, 255, 0.6);
+      "
+    >
+      Next →
+    </button>
+  </div>
+</div>

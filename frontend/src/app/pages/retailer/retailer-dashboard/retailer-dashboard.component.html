@@ -1,0 +1,210 @@
+<div class="min-h-screen pb-12" style="background: transparent">
+  <!-- Header -->
+  <div class="mb-6 flex items-center gap-3">
+    <div
+      class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+      style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+    >
+      🏪
+    </div>
+    <div>
+      <h2 class="text-2xl font-black text-white">Retailer Dashboard</h2>
+      <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">
+        Store overview and supply chain analytics
+      </p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <p
+        class="text-xs font-black uppercase tracking-wider mb-2"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Inventory Value
+      </p>
+      <p class="text-2xl font-black" style="color: #4ade80">₹{{ stats.inventoryValue | number }}</p>
+      <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.3)">↑ 5% from last week</p>
+    </div>
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(6, 182, 212, 0.2)"
+    >
+      <p
+        class="text-xs font-black uppercase tracking-wider mb-2"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Open Orders
+      </p>
+      <p class="text-2xl font-black" style="color: #67e8f9">{{ stats.openPOs }}</p>
+      <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.3)">Awaiting delivery</p>
+    </div>
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(139, 92, 246, 0.2)"
+    >
+      <p
+        class="text-xs font-black uppercase tracking-wider mb-2"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Incoming Shipments
+      </p>
+      <p class="text-2xl font-black" style="color: #c4b5fd">{{ stats.incomingShipments }}</p>
+      <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.3)">Arriving soon</p>
+    </div>
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(239, 68, 68, 0.2)"
+    >
+      <p
+        class="text-xs font-black uppercase tracking-wider mb-2"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Low Stock Alert
+      </p>
+      <p class="text-2xl font-black" style="color: #fca5a5">{{ stats.lowStock }}</p>
+      <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.3)">Items need reorder</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div
+      class="lg:col-span-2 rounded-2xl p-5"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="font-black text-white text-sm">📈 Sales Trends</h3>
+          <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.3)">
+            Last 7 days performance
+          </p>
+        </div>
+        <select
+          class="text-xs rounded-xl px-2 py-1.5 outline-none"
+          style="
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+          "
+        >
+          <option style="background: #020c05">This Week</option>
+          <option style="background: #020c05">This Month</option>
+        </select>
+      </div>
+      <div class="h-56"><canvas #barChart></canvas></div>
+    </div>
+
+    <div class="space-y-4">
+      <div
+        class="rounded-2xl p-5"
+        style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+      >
+        <h3 class="font-black text-white text-sm mb-3">📊 Stock Distribution</h3>
+        <div class="h-40 flex justify-center"><canvas #pieChart></canvas></div>
+      </div>
+
+      <div
+        class="rounded-2xl p-5 relative overflow-hidden"
+        style="
+          background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(20, 83, 45, 0.3));
+          border: 1px solid rgba(74, 222, 128, 0.3);
+        "
+      >
+        <div class="relative z-10">
+          <h3 class="font-black text-white text-sm mb-1">🛒 Buy from Distributors</h3>
+          <p class="text-xs mb-3" style="color: rgba(255, 255, 255, 0.5)">
+            Browse wholesale market for certified crops.
+          </p>
+          <a
+            routerLink="/retailer/market"
+            class="inline-flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-black text-white transition-all"
+            style="background: rgba(34, 197, 94, 0.3); border: 1px solid rgba(74, 222, 128, 0.4)"
+          >
+            Go to Market →
+          </a>
+        </div>
+        <div class="absolute right-0 bottom-0 text-7xl opacity-5">🛒</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div
+    class="rounded-2xl overflow-hidden"
+    style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+  >
+    <div
+      class="px-5 py-4 flex items-center justify-between"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.1)"
+    >
+      <h3 class="font-black text-white text-sm">Recent Purchase Orders</h3>
+      <a href="#" class="text-xs font-black" style="color: #4ade80">View All →</a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)">
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Order ID
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Supplier
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Total Items
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Amount
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Status
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let o of recentOrders"
+            style="border-bottom: 1px solid rgba(74, 222, 128, 0.05)"
+          >
+            <td class="px-5 py-3 text-xs font-black text-white">{{ o.id }}</td>
+            <td class="px-5 py-3 text-xs" style="color: rgba(255, 255, 255, 0.6)">
+              {{ o.supplier }}
+            </td>
+            <td class="px-5 py-3 text-xs" style="color: rgba(255, 255, 255, 0.6)">
+              {{ o.items }} items
+            </td>
+            <td class="px-5 py-3 text-xs font-black" style="color: #4ade80">₹{{ o.total }}</td>
+            <td class="px-5 py-3">
+              <span
+                class="px-2 py-1 rounded-full text-xs font-black"
+                [ngClass]="statusClass(o.status)"
+              >
+                {{ o.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

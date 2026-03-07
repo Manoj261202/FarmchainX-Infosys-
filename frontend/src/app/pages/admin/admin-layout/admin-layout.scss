@@ -1,0 +1,14 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.admin-shell {
+  background-image:
+    linear-gradient(to bottom, rgba(0, 20, 8, 0.92) 0%, rgba(0, 15, 6, 0.95) 100%),
+    url('/farmpic1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

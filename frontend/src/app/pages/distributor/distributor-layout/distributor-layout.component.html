@@ -1,0 +1,184 @@
+<div class="flex h-screen overflow-hidden" style="background: #020c05">
+  <!-- Farm Background -->
+  <div
+    class="fixed inset-0 z-0"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgba(0, 20, 8, 0.85) 0%,
+          rgba(0, 15, 6, 0.9) 50%,
+          rgba(0, 10, 4, 0.97) 100%
+        ),
+        url('farmpic1.jpg');
+      background-size: cover;
+      background-position: center;
+    "
+  ></div>
+
+  <!-- Sidebar -->
+  <aside
+    class="hidden lg:flex w-64 h-full flex-col relative z-10"
+    style="background: rgba(2, 10, 4, 0.95); border-right: 1px solid rgba(74, 222, 128, 0.15)"
+  >
+    <!-- Logo -->
+    <div
+      class="p-5 flex items-center gap-3"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.12)"
+    >
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="
+          background: linear-gradient(135deg, #22c55e, #14532d);
+          box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        "
+      >
+        🚚
+      </div>
+      <div>
+        <div class="text-sm font-black text-white">FarmChainX</div>
+        <div class="text-xs" style="color: #4ade80">Distributor Portal</div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="flex-1 overflow-y-auto px-3 py-4">
+      <nav class="space-y-1">
+        <a
+          routerLink="/distributor/dashboard"
+          routerLinkActive="active-nav"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+          style="color: rgba(255, 255, 255, 0.55)"
+        >
+          <span class="text-base">🏠</span>
+          <span>Dashboard</span>
+        </a>
+
+        <a
+          routerLink="/distributor/farmer-procurement"
+          routerLinkActive="active-nav"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+          style="color: rgba(255, 255, 255, 0.55)"
+        >
+          <span class="text-base">🌾</span>
+          <span>Farmer Procurement</span>
+        </a>
+
+        <a
+          routerLink="/distributor/inventory"
+          routerLinkActive="active-nav"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+          style="color: rgba(255, 255, 255, 0.55)"
+        >
+          <span class="text-base">📦</span>
+          <span>Inventory</span>
+        </a>
+
+        <a
+          routerLink="/distributor/dispatch"
+          routerLinkActive="active-nav"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+          style="color: rgba(255, 255, 255, 0.55)"
+        >
+          <span class="text-base">⚡</span>
+          <span>Dispatch</span>
+        </a>
+
+        <a
+          routerLink="/distributor/profile"
+          routerLinkActive="active-nav"
+          class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+          style="color: rgba(255, 255, 255, 0.55)"
+        >
+          <span class="text-base">👤</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Exit -->
+    <div class="p-3" style="border-top: 1px solid rgba(74, 222, 128, 0.12)">
+      <a
+        routerLink="/dashboard"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.4)"
+      >
+        <span class="text-base">🚪</span>
+        <span>Exit Dashboard</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col overflow-y-auto relative z-10">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-40"
+      style="
+        background: rgba(3, 18, 8, 0.85);
+        border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+        backdrop-filter: blur(20px);
+      "
+    >
+      <div class="px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button
+              (click)="toggleSidebar()"
+              class="p-2 rounded-xl transition lg:hidden"
+              style="color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.06)"
+            >
+              ☰
+            </button>
+            <div>
+              <h1 class="text-xl font-black text-white">Distributor Dashboard</h1>
+              <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.35)">
+                Supply Chain Management
+              </p>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2 px-3 py-1.5 rounded-full"
+            style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(74, 222, 128, 0.25)"
+          >
+            <div class="relative">
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+              <div
+                class="w-2 h-2 bg-green-400 rounded-full absolute inset-0 animate-ping opacity-75"
+              ></div>
+            </div>
+            <span class="text-xs font-bold" style="color: #4ade80">Operational</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div *ngIf="sidebarOpen" class="fixed inset-0 z-50 lg:hidden" (click)="toggleSidebar()">
+    <div class="absolute inset-0" style="background: rgba(0, 0, 0, 0.7)"></div>
+    <div
+      class="absolute left-0 top-0 h-full w-64"
+      (click)="$event.stopPropagation()"
+      style="background: rgba(3, 18, 8, 0.98); border-right: 1px solid rgba(74, 222, 128, 0.2)"
+    ></div>
+  </div>
+</div>
+
+<style>
+  .active-nav {
+    background: rgba(34, 197, 94, 0.15) !important;
+    color: #4ade80 !important;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+  }
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+</style>

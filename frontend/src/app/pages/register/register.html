@@ -1,0 +1,421 @@
+<!-- NOTIFICATION POPUP -->
+<div
+  *ngIf="notification"
+  class="fixed top-6 right-6 z-50 min-w-[300px] max-w-sm rounded-2xl px-5 py-4 shadow-2xl transition-all duration-500"
+  [style.background]="notification.type === 'success' ? 'rgba(3,40,15,0.95)' : 'rgba(40,5,5,0.95)'"
+  [style.border]="
+    notification.type === 'success'
+      ? '1px solid rgba(74,222,128,0.4)'
+      : '1px solid rgba(239,68,68,0.4)'
+  "
+  style="backdrop-filter: blur(20px)"
+>
+  <div class="flex items-start gap-3">
+    <div
+      class="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+      [style.background]="
+        notification.type === 'success' ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'
+      "
+    >
+      {{ notification.type === 'success' ? '🌿' : '⚠️' }}
+    </div>
+    <div>
+      <div class="font-black text-white text-sm mb-0.5">{{ notification.title }}</div>
+      <div class="text-xs" [style.color]="notification.type === 'success' ? '#86efac' : '#fca5a5'">
+        {{ notification.message }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="mt-3 h-1 rounded-full overflow-hidden" style="background: rgba(255, 255, 255, 0.1)">
+    <div
+      class="h-full rounded-full notify-progress"
+      [style.background]="notification.type === 'success' ? '#22c55e' : '#ef4444'"
+    ></div>
+  </div>
+</div>
+<div
+  class="min-h-screen flex flex-col justify-between relative overflow-hidden"
+  style="
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(0, 30, 10, 0.6) 0%,
+        rgba(0, 20, 8, 0.5) 40%,
+        rgba(0, 15, 6, 0.8) 85%,
+        rgba(0, 10, 4, 0.97) 100%
+      ),
+      url('farmpic1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  "
+>
+  <!-- Glow blobs -->
+  <div
+    class="absolute top-0 left-0 w-96 h-96 rounded-full pointer-events-none z-0"
+    style="
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 0%, transparent 65%);
+      transform: translate(-30%, -30%);
+    "
+  ></div>
+  <div
+    class="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none z-0"
+    style="
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 65%);
+      transform: translate(30%, 30%);
+    "
+  ></div>
+
+  <!-- CENTER — Floating Register Box -->
+  <div class="flex-1 flex items-center justify-center px-4 py-10 relative z-10">
+    <div class="w-full max-w-lg register-float">
+      <div
+        class="rounded-3xl p-9"
+        style="
+          background: rgba(3, 18, 8, 0.75);
+          border: 1px solid rgba(74, 222, 128, 0.25);
+          box-shadow:
+            0 40px 100px rgba(0, 0, 0, 0.65),
+            inset 0 1px 0 rgba(255, 255, 255, 0.07);
+          backdrop-filter: blur(32px);
+          -webkit-backdrop-filter: blur(32px);
+        "
+      >
+        <!-- Header -->
+        <div class="text-center mb-7">
+          <div
+            class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3"
+            style="
+              background: linear-gradient(135deg, #22c55e, #14532d);
+              box-shadow: 0 8px 28px rgba(34, 197, 94, 0.45);
+            "
+          >
+            🌱
+          </div>
+          <h2 class="text-2xl font-black text-white mb-1">Create Account</h2>
+          <p class="text-sm" style="color: rgba(255, 255, 255, 0.35)">
+            Join FarmChainX — Free forever
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form (ngSubmit)="submit()" #f="ngForm" autocomplete="off">
+          <!-- Name + Email -->
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label
+                class="block text-xs font-black mb-2 uppercase tracking-widest"
+                style="color: #86efac"
+                >Full Name</label
+              >
+              <input
+                class="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
+                style="
+                  background: rgba(255, 255, 255, 0.07);
+                  border: 1.5px solid rgba(74, 222, 128, 0.18);
+                "
+                name="name"
+                type="text"
+                placeholder="Your full name"
+                [(ngModel)]="name"
+                required
+              />
+            </div>
+            <div>
+              <label
+                class="block text-xs font-black mb-2 uppercase tracking-widest"
+                style="color: #86efac"
+                >Email Address</label
+              >
+              <input
+                class="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
+                style="
+                  background: rgba(255, 255, 255, 0.07);
+                  border: 1.5px solid rgba(74, 222, 128, 0.18);
+                "
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                [(ngModel)]="email"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Password + Confirm -->
+          <div class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label
+                class="block text-xs font-black mb-2 uppercase tracking-widest"
+                style="color: #86efac"
+                >Password</label
+              >
+              <input
+                class="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
+                style="
+                  background: rgba(255, 255, 255, 0.07);
+                  border: 1.5px solid rgba(74, 222, 128, 0.18);
+                "
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                [(ngModel)]="password"
+                (ngModelChange)="checkPassword()"
+                required
+              />
+            </div>
+            <div>
+              <label
+                class="block text-xs font-black mb-2 uppercase tracking-widest"
+                style="color: #86efac"
+                >Confirm Password</label
+              >
+              <input
+                class="w-full rounded-xl px-4 py-3 text-sm text-white outline-none"
+                style="
+                  background: rgba(255, 255, 255, 0.07);
+                  border: 1.5px solid rgba(74, 222, 128, 0.18);
+                "
+                name="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                [(ngModel)]="confirmPassword"
+                (ngModelChange)="checkConfirmPassword()"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Password validation -->
+          <div class="grid grid-cols-2 gap-1 mb-4">
+            <span
+              class="text-xs flex items-center gap-1"
+              [class.text-green-400]="passwordValid.minLength"
+              [class.text-gray-600]="!passwordValid.minLength"
+            >
+              {{ passwordValid.minLength ? '✓' : '○' }} Min 8 characters
+            </span>
+            <span
+              class="text-xs flex items-center gap-1"
+              [class.text-green-400]="passwordValid.uppercase"
+              [class.text-gray-600]="!passwordValid.uppercase"
+            >
+              {{ passwordValid.uppercase ? '✓' : '○' }} Uppercase letter
+            </span>
+            <span
+              class="text-xs flex items-center gap-1"
+              [class.text-green-400]="passwordValid.number"
+              [class.text-gray-600]="!passwordValid.number"
+            >
+              {{ passwordValid.number ? '✓' : '○' }} Number
+            </span>
+            <span
+              class="text-xs flex items-center gap-1"
+              [class.text-green-400]="passwordsMatch && confirmPassword.length > 0"
+              [class.text-gray-600]="!passwordsMatch"
+            >
+              {{ passwordsMatch && confirmPassword.length > 0 ? '✓' : '○' }} Passwords match
+            </span>
+          </div>
+
+          <!-- Role selector -->
+          <div class="mb-5">
+            <label
+              class="block text-xs font-black mb-3 uppercase tracking-widest"
+              style="color: #86efac"
+              >I am a...</label
+            >
+            <div class="grid grid-cols-5 gap-2">
+              <button
+                type="button"
+                (click)="role = 'ADMIN'"
+                class="rounded-xl py-2.5 px-1 text-center transition-all duration-200"
+                [style.background]="
+                  role === 'ADMIN' ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)'
+                "
+                [style.border]="
+                  role === 'ADMIN'
+                    ? '1.5px solid rgba(74,222,128,0.5)'
+                    : '1.5px solid rgba(74,222,128,0.15)'
+                "
+              >
+                <div class="text-xl mb-1">🛡️</div>
+                <div class="text-xs font-700" style="color: #86efac; font-weight: 700">Admin</div>
+              </button>
+              <button
+                type="button"
+                (click)="role = 'FARMER'"
+                class="rounded-xl py-2.5 px-1 text-center transition-all duration-200"
+                [style.background]="
+                  role === 'FARMER' ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)'
+                "
+                [style.border]="
+                  role === 'FARMER'
+                    ? '1.5px solid rgba(74,222,128,0.5)'
+                    : '1.5px solid rgba(74,222,128,0.15)'
+                "
+              >
+                <div class="text-xl mb-1">🌾</div>
+                <div class="text-xs font-700" style="color: #86efac; font-weight: 700">Farmer</div>
+              </button>
+              <button
+                type="button"
+                (click)="role = 'DISTRIBUTOR'"
+                class="rounded-xl py-2.5 px-1 text-center transition-all duration-200"
+                [style.background]="
+                  role === 'DISTRIBUTOR' ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)'
+                "
+                [style.border]="
+                  role === 'DISTRIBUTOR'
+                    ? '1.5px solid rgba(74,222,128,0.5)'
+                    : '1.5px solid rgba(74,222,128,0.15)'
+                "
+              >
+                <div class="text-xl mb-1">🚚</div>
+                <div class="text-xs font-700" style="color: #86efac; font-weight: 700">
+                  Distributor
+                </div>
+              </button>
+              <button
+                type="button"
+                (click)="role = 'RETAILER'"
+                class="rounded-xl py-2.5 px-1 text-center transition-all duration-200"
+                [style.background]="
+                  role === 'RETAILER' ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)'
+                "
+                [style.border]="
+                  role === 'RETAILER'
+                    ? '1.5px solid rgba(74,222,128,0.5)'
+                    : '1.5px solid rgba(74,222,128,0.15)'
+                "
+              >
+                <div class="text-xl mb-1">🏪</div>
+                <div class="text-xs font-700" style="color: #86efac; font-weight: 700">
+                  Retailer
+                </div>
+              </button>
+              <button
+                type="button"
+                (click)="role = 'CONSUMER'"
+                class="rounded-xl py-2.5 px-1 text-center transition-all duration-200"
+                [style.background]="
+                  role === 'CONSUMER' ? 'rgba(34,197,94,0.15)' : 'rgba(255,255,255,0.05)'
+                "
+                [style.border]="
+                  role === 'CONSUMER'
+                    ? '1.5px solid rgba(74,222,128,0.5)'
+                    : '1.5px solid rgba(74,222,128,0.15)'
+                "
+              >
+                <div class="text-xl mb-1">🛒</div>
+                <div class="text-xs font-700" style="color: #86efac; font-weight: 700">
+                  Consumer
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button
+            type="submit"
+            [disabled]="!isFormValid() || submitting"
+            class="w-full text-white font-black text-base py-4 rounded-xl transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            style="
+              background: linear-gradient(135deg, #22c55e, #15803d);
+              box-shadow: 0 6px 28px rgba(34, 197, 94, 0.4);
+            "
+          >
+            {{ submitting ? 'Creating Account...' : 'Create Free Account' }}
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 my-4">
+          <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.08)"></div>
+          <span class="text-xs" style="color: rgba(255, 255, 255, 0.2)">or</span>
+          <div class="flex-1 h-px" style="background: rgba(255, 255, 255, 0.08)"></div>
+        </div>
+
+        <p class="text-center text-xs mb-3" style="color: rgba(255, 255, 255, 0.28)">
+          Already have an account?
+        </p>
+        <a
+          routerLink="/login"
+          class="block text-center py-3.5 rounded-xl font-bold text-sm transition-all duration-200"
+          style="
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(74, 222, 128, 0.18);
+            color: #86efac;
+          "
+        >
+          Sign In →
+        </a>
+
+        <p class="text-center mt-4 text-xs" style="color: rgba(255, 255, 255, 0.2)">
+          🔒 Secured by FarmChainX Technology
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM QUOTE -->
+  <div
+    class="relative z-10 text-center py-5 px-8"
+    style="
+      background: linear-gradient(
+        to right,
+        transparent,
+        rgba(3, 14, 6, 0.92) 20%,
+        rgba(3, 14, 6, 0.92) 80%,
+        transparent
+      );
+      border-top: 1px solid rgba(74, 222, 128, 0.1);
+    "
+  >
+    <div class="text-xl mb-2">🌾</div>
+    <p
+      class="text-sm italic mb-2"
+      style="font-family: Georgia, serif; color: rgba(255, 255, 255, 0.55); line-height: 1.75"
+    >
+      "The farmer is the only man in our economy who buys everything at
+      <span style="color: #86efac; font-style: normal; font-weight: 700">retail price</span>,<br />
+      sells everything at
+      <span style="color: #86efac; font-style: normal; font-weight: 700">wholesale price</span>, and
+      pays the freight both ways."
+    </p>
+    <p class="text-xs font-bold uppercase tracking-widest" style="color: rgba(255, 255, 255, 0.25)">
+      — John F. Kennedy &nbsp;🌿
+    </p>
+  </div>
+</div>
+
+<style>
+  @keyframes floatCard {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  .register-float {
+    animation: floatCard 5s ease-in-out infinite;
+  }
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.2) !important;
+  }
+  @keyframes notifyProgress {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+  .notify-progress {
+    animation: notifyProgress 3.5s linear forwards;
+  }
+</style>

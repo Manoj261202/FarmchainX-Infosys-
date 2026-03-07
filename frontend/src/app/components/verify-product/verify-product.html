@@ -1,0 +1,371 @@
+﻿<div class="min-h-screen text-white" style="background:#0d0d0d">
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="fixed inset-0 flex items-center justify-center z-50" style="background:rgba(0,0,0,0.85)">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-amber-500 mx-auto mb-4"></div>
+      <p class="text-lg font-semibold text-amber-400 tracking-widest uppercase">Verifying on Database...</p>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="flex items-center justify-center min-h-screen px-6">
+    <div class="text-center">
+      <div class="text-8xl mb-6">⚠️</div>
+      <h1 class="text-4xl font-black text-red-400 mb-4">Invalid QR Code</h1>
+      <p class="text-gray-400">{{ error }}</p>
+      <p class="text-gray-500 mt-2">This product is not registered on FarmChainX</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="product && !loading" class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- Top: Image + Details -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+      <!-- Left: Product Image Card -->
+      <div class="relative rounded-2xl overflow-hidden" style="min-height:420px">
+        <!-- Back button -->
+        <button (click)="goBack()"
+          class="absolute top-4 left-4 z-20 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all hover:bg-white/20"
+          style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+        </button>
+
+        <!-- Image -->
+        <img *ngIf="product.imagePath || product.imageUrl"
+          [src]="getImageUrl(product.imageUrl || product.imagePath)"
+          [alt]="product.cropName"
+          class="w-full h-full object-cover absolute inset-0" style="min-height:420px" />
+        <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)"></div>
+
+        <!-- Verified badge -->
+        <div class="absolute top-4 right-4 z-10">
+          <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+            style="background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.2)">
+            <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span> Verified Product
+          </span>
+        </div>
+
+        <!-- Product name -->
+        <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+          <h1 class="text-5xl font-black text-white leading-none mb-1">{{ product.cropName | titlecase }}</h1>
+          <p class="text-sm text-gray-300 mb-4">by {{ product.farmerName || 'Unknown Farmer' }}</p>
+          <!-- Grade bar -->
+          <div class="flex items-center gap-4">
+            <div>
+              <p class="text-xs uppercase tracking-widest mb-0.5" style="color:rgba(255,255,255,0.4)">AI Quality Grade</p>
+              <p class="text-3xl font-black" style="color:#d97706">{{ product.qualityGrade || '—' }}</p>
+            </div>
+            <div class="w-px h-10 bg-white/20"></div>
+            <div>
+              <p class="text-xs uppercase tracking-widest mb-0.5" style="color:rgba(255,255,255,0.4)">Confidence</p>
+              <p class="text-3xl font-black text-white">{{ (product.confidence | number:'1.0-0') || '—' }}<span class="text-xl">%</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Product Details -->
+      <div class="flex flex-col gap-3">
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.35)">Product Details</p>
+
+        <!-- Harvest Date -->
+        <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+          <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+            <span>📅</span> Harvest Date
+          </p>
+          <p class="text-base font-bold text-white">{{ product.harvestDate | date:'MMMM d, yyyy' }}</p>
+        </div>
+
+        <!-- Soil + Pesticides -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+              <span>🌿</span> Soil Type
+            </p>
+            <p class="text-sm font-bold text-white">{{ product.soilType || '—' }}</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+              <span>🧪</span> Pesticides
+            </p>
+            <p class="text-sm font-bold text-white">{{ product.pesticides || '—' }}</p>
+          </div>
+        </div>
+
+        <!-- Price -->
+        <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+          <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+            <span>💰</span> Price
+          </p>
+          <p class="text-xl font-black" style="color:#d97706">
+            ₹{{ product.price | number:'1.0-0' }}<span class="text-sm font-medium text-gray-400">/{{ product.quantityUnit || 'kg' }}</span>
+          </p>
+        </div>
+
+        <!-- Available Quantity -->
+        <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+          <p class="text-xs uppercase tracking-widest mb-2 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+            <span>⚖️</span> Available Quantity
+          </p>
+          <div class="flex items-baseline gap-2 mb-1">
+            <span class="text-2xl font-black" style="color:#4ade80">{{ (product.quantity | number:'1.0-0') || '—' }}</span>
+            <span class="text-sm text-gray-400">{{ product.quantityUnit || 'kg' }} remaining</span>
+            <span class="ml-auto text-xs text-gray-500">of {{ (product.quantity | number:'1.0-0') || '—' }} {{ product.quantityUnit || 'kg' }} total</span>
+          </div>
+          <div class="w-full rounded-full h-1.5 bg-white/10">
+            <div class="h-1.5 rounded-full bg-green-500" style="width:100%"></div>
+          </div>
+          <p class="text-xs mt-1" style="color:rgba(255,255,255,0.3)">{{ product.currentStatus || 'In stock at farm' }}</p>
+        </div>
+
+        <!-- Farm Location -->
+        <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+          <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+            <span>📍</span> Farm Location
+          </p>
+          <p class="text-sm font-bold text-white">{{ displayLocation || 'Protected Location' }}</p>
+        </div>
+
+        <!-- Best Before + Batch ID -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:{{ product.expiryDate ? '#ef4444' : 'rgba(255,255,255,0.4)' }}">
+              <span>⏱️</span> Best Before
+            </p>
+            <p class="text-sm font-bold" [ngStyle]="{'color': product.expiryDate ? '#ef4444' : 'white'}">
+              {{ product.expiryDate ? (product.expiryDate | date:'MMMM d, yyyy') : '—' }}
+            </p>
+          </div>
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+              <span>📖</span> Batch ID
+            </p>
+            <p class="text-sm font-bold" style="color:#d97706">{{ product.batchId || '—' }}</p>
+          </div>
+        </div>
+
+        <!-- Chain Steps + Ledger ID -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+              <span>⚡</span> Chain Steps
+            </p>
+            <p class="text-2xl font-black text-white">{{ product.trackingHistory?.length || 0 }}</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs uppercase tracking-widest mb-1 flex items-center gap-1.5" style="color:rgba(255,255,255,0.4)">
+              <span>📋</span> Ledger ID
+            </p>
+            <p class="text-2xl font-black text-white">#{{ product.productId }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authenticity + UUID -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+      <div class="rounded-xl p-5 flex items-center gap-5" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+        <div class="rounded-lg px-5 py-3 text-center" style="background:#1a1200; border:1px solid rgba(217,119,6,0.3)">
+          <p class="text-4xl font-black" style="color:#d97706">{{ product.qualityGrade || 'A+' }}</p>
+          <p class="text-xs mt-0.5" style="color:#92400e">{{ (product.confidence | number:'1.0-0') || '—' }}%</p>
+        </div>
+        <div>
+          <p class="text-sm font-black text-white tracking-wide">100% AUTHENTIC</p>
+          <p class="text-xs mt-0.5" style="color:rgba(255,255,255,0.35)">· FARMCHAINX LEDGER</p>
+        </div>
+      </div>
+      <div class="rounded-xl p-5" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+        <p class="text-xs uppercase tracking-widest mb-2" style="color:rgba(255,255,255,0.35)">UUID Hash</p>
+        <p class="text-sm font-mono break-all select-all" style="color:#d97706">{{ product.publicUuid }}</p>
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-xs" style="color:rgba(255,255,255,0.35)">QR Scans:</span>
+          <span class="text-sm font-black" style="color:#4ade80">{{ product.scanCount ?? 0 }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supply Chain Journey -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-5 h-px" style="background:#d97706"></div>
+        <h2 class="text-xl font-black text-white">Supply Chain Journey</h2>
+      </div>
+      <div class="space-y-3">
+        <div *ngFor="let log of product.trackingHistory; let i = index"
+          class="rounded-xl p-5 flex gap-4 items-start"
+          style="background:#fff; color:#111">
+          <div class="w-9 h-9 flex-shrink-0 rounded-lg flex items-center justify-center text-sm font-black"
+            style="background:#111; color:#fff; border:1px solid rgba(0,0,0,0.1)">
+            {{ i + 1 }}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-4">
+              <h3 class="text-base font-bold" style="color:#111">{{ log.location || 'Farm Origin' }}</h3>
+              <span *ngIf="log.confirmed || log.createdBy"
+                class="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
+                style="background:rgba(0,0,0,0.06); color:#555">
+                ✓ {{ log.createdBy || 'Verified' }}
+              </span>
+            </div>
+            <p class="text-xs mt-0.5 mb-2" style="color:#888">{{ log.timestamp | date:'MMM d, yyyy, h:mm:ss a' }}</p>
+            <p class="text-sm" style="color:#333">{{ log.notes || 'Product entered supply chain' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consumer Reviews -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-5 h-px" style="background:#d97706"></div>
+        <h2 class="text-xl font-black text-white">Consumer Reviews</h2>
+      </div>
+
+      <div *ngIf="feedbacks.length === 0" class="rounded-xl p-6 text-center" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+        <p class="text-gray-400">No reviews yet. Be the first to review!</p>
+      </div>
+
+      <div class="space-y-3">
+        <div *ngFor="let fb of feedbacks" class="rounded-xl p-5" style="background:#fff; color:#111">
+          <div class="flex justify-between items-start mb-2">
+            <div class="flex items-center gap-2">
+              <span class="text-amber-500">
+                <ng-container *ngFor="let s of [1,2,3,4,5]">
+                  <span>{{ s <= fb.rating ? '★' : '☆' }}</span>
+                </ng-container>
+              </span>
+              <span class="font-bold text-sm">{{ fb.rating }}/5</span>
+            </div>
+            <span class="text-xs" style="color:#888">{{ fb.createdAt | date:'MMM d, yyyy' }}</span>
+          </div>
+          <p class="text-sm" style="color:#333">{{ fb.comment }}</p>
+        </div>
+      </div>
+
+      <!-- Already reviewed -->
+      <div *ngIf="userRole === 'Consumer' && !consumerCanGiveFeedback && currentUserId"
+        class="mt-3 text-center text-sm text-gray-500">
+        You have already submitted feedback for this product.
+      </div>
+
+      <!-- Leave review form -->
+      <div *ngIf="userRole === 'Consumer' && consumerCanGiveFeedback"
+        class="mt-4 rounded-xl p-5" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-base font-bold mb-4 text-white">Leave Your Review</h3>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color:rgba(255,255,255,0.4)">Rating (1–5)</label>
+            <input type="number" min="1" max="5" [(ngModel)]="myRating"
+              class="w-full px-4 py-3 rounded-xl text-2xl font-bold text-center text-white focus:outline-none focus:border-amber-500"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15)" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider mb-2" style="color:rgba(255,255,255,0.4)">Comment</label>
+            <textarea [(ngModel)]="myComment" rows="3" placeholder="Share your experience..."
+              class="w-full px-4 py-3 rounded-xl text-sm text-white resize-none focus:outline-none focus:border-amber-500"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15)"></textarea>
+          </div>
+        </div>
+        <button (click)="submitFeedback()"
+          class="w-full py-3 rounded-xl text-sm font-black text-white transition-all hover:opacity-90"
+          style="background:linear-gradient(135deg,#d97706,#92400e)">
+          Submit Feedback
+        </button>
+      </div>
+
+      <div *ngIf="!currentUserId" class="mt-3 text-center text-xs text-gray-500">
+        Only consumers can submit feedback.
+      </div>
+    </div>
+
+    <!-- Distributor / Retailer update panel -->
+    <div *ngIf="showUpdatePossible()" class="mb-6">
+      <div class="rounded-xl p-5" style="background:#111; border:1px solid rgba(217,119,6,0.3)">
+
+        <!-- Distributor first claim -->
+        <div *ngIf="userRole === 'Distributor' && !hasDistributorTakenPossession()">
+          <h3 class="text-base font-black text-amber-400 mb-2">First Time Scanning</h3>
+          <p class="text-sm text-gray-400 mb-4">Confirm that you have physically received this product from the farmer.</p>
+          <button (click)="openForm('update')"
+            class="px-6 py-3 rounded-xl text-sm font-black text-white transition-all hover:opacity-90"
+            style="background:linear-gradient(135deg,#d97706,#92400e)">
+            I Have Taken From Farmer
+          </button>
+        </div>
+
+        <!-- Distributor with possession -->
+        <div *ngIf="userRole === 'Distributor' && hasDistributorTakenPossession()" class="flex flex-wrap gap-3">
+          <button (click)="openForm('update')"
+            class="px-5 py-2.5 rounded-xl text-sm font-black text-white transition-all hover:opacity-90"
+            style="background:linear-gradient(135deg,#059669,#047857)">
+            + Add Tracking Update
+          </button>
+          <button (click)="openForm('handover')"
+            class="px-5 py-2.5 rounded-xl text-sm font-black text-white transition-all hover:opacity-90"
+            style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">
+            Final Handover to Retailer
+          </button>
+        </div>
+
+        <!-- Retailer -->
+        <div *ngIf="userRole === 'Retailer'">
+          <h3 class="text-base font-black text-cyan-400 mb-2">Pending Receipt</h3>
+          <p class="text-sm text-gray-400 mb-4">Distributor has handed over this product to you.</p>
+          <button (click)="openForm('update')"
+            class="px-6 py-3 rounded-xl text-sm font-black text-white transition-all hover:opacity-90"
+            style="background:linear-gradient(135deg,#0284c7,#0369a1)">
+            Confirm Receipt
+          </button>
+        </div>
+
+        <!-- Update Form -->
+        <div *ngIf="showAddForm" class="mt-5 pt-5" style="border-top:1px solid rgba(255,255,255,0.08)">
+          <div *ngIf="mode === 'handover'" class="mb-4">
+            <label class="block text-xs uppercase tracking-wider text-gray-400 mb-2">Select Retailer</label>
+            <select [(ngModel)]="selectedRetailerId"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white focus:outline-none"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15)">
+              <option [ngValue]="null" disabled>Select retailer...</option>
+              <option *ngFor="let r of retailers" [ngValue]="r.id">{{ r.name }} ({{ r.email }})</option>
+            </select>
+          </div>
+          <div class="space-y-3">
+            <input [(ngModel)]="newLocation" placeholder="Current Location / Action Taken"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15)" />
+            <textarea [(ngModel)]="newNote" rows="3" placeholder="Additional notes (optional)"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-500 resize-none focus:outline-none"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15)"></textarea>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button (click)="submitChainUpdate()" [disabled]="mode === 'handover' && !selectedRetailerId"
+              class="flex-1 py-3 rounded-xl text-sm font-black text-white transition-all hover:opacity-90 disabled:opacity-40"
+              [ngStyle]="{'background': mode === 'handover' ? 'linear-gradient(135deg,#7c3aed,#6d28d9)' : userRole === 'Retailer' ? 'linear-gradient(135deg,#0284c7,#0369a1)' : 'linear-gradient(135deg,#d97706,#92400e)'}">
+              {{ mode === 'handover' ? 'Handover to Retailer' : userRole === 'Retailer' ? 'Confirm Receipt' : !hasDistributorTakenPossession() ? 'Confirm Taken From Farmer' : 'Update Database' }}
+            </button>
+            <button (click)="cancelForm()"
+              class="px-6 py-3 rounded-xl text-sm font-bold text-gray-300 hover:text-white transition-colors"
+              style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1)">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Already completed notice -->
+    <div *ngIf="!showUpdatePossible() && (userRole === 'Distributor' || userRole === 'Retailer')"
+      class="mb-6 text-center py-6 rounded-xl" style="background:#111; border:1px solid rgba(255,255,255,0.07)">
+      <p class="text-sm text-gray-500">
+        {{ userRole === 'Distributor' ? 'You have already handed over this product to a retailer.' : 'You have already confirmed receipt of this product.' }}
+      </p>
+    </div>
+
+  </div>
+</div>

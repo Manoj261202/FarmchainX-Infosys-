@@ -1,0 +1,213 @@
+<div class="min-h-screen pb-12" style="background: transparent">
+  <!-- Header -->
+  <div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        ⚡
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">Dispatch Management</h2>
+        <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">
+          Ship products to retailers and track deliveries
+        </p>
+      </div>
+    </div>
+    <div class="text-right">
+      <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">Ready to Dispatch</p>
+      <p class="text-xl font-black" style="color: #4ade80">{{ dispatchableItems.length }}</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-xs font-black uppercase tracking-wider mb-1"
+            style="color: rgba(255, 255, 255, 0.35)"
+          >
+            Available for Dispatch
+          </p>
+          <p class="text-2xl font-black" style="color: #4ade80">{{ dispatchableItems.length }}</p>
+        </div>
+        <span class="text-2xl">📦</span>
+      </div>
+    </div>
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(139, 92, 246, 0.2)"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-xs font-black uppercase tracking-wider mb-1"
+            style="color: rgba(255, 255, 255, 0.35)"
+          >
+            Dispatches Today
+          </p>
+          <p class="text-2xl font-black" style="color: #c4b5fd">{{ dispatchesToday }}</p>
+        </div>
+        <span class="text-2xl">⚡</span>
+      </div>
+    </div>
+    <div
+      class="rounded-2xl p-4"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(6, 182, 212, 0.2)"
+    >
+      <div class="flex items-center justify-between">
+        <div>
+          <p
+            class="text-xs font-black uppercase tracking-wider mb-1"
+            style="color: rgba(255, 255, 255, 0.35)"
+          >
+            Total Dispatches
+          </p>
+          <p class="text-2xl font-black" style="color: #67e8f9">{{ totalDispatches }}</p>
+        </div>
+        <span class="text-2xl">📋</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div
+    class="rounded-2xl overflow-hidden"
+    style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+  >
+    <div
+      class="px-5 py-4 flex items-center justify-between"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.1)"
+    >
+      <h3 class="font-black text-white text-sm">Dispatchable Products</h3>
+      <div class="flex gap-2">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          placeholder="Search products..."
+          class="text-xs rounded-xl px-3 py-2 outline-none"
+          style="
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            color: white;
+          "
+        />
+        <button
+          class="text-xs px-3 py-2 rounded-xl font-bold"
+          style="
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            color: #4ade80;
+          "
+        >
+          Filter
+        </button>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)">
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Product Details
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Location
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Value
+            </th>
+            <th
+              class="px-5 py-3 text-left text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Received
+            </th>
+            <th
+              class="px-5 py-3 text-right text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of filteredItems"
+            style="border-bottom: 1px solid rgba(74, 222, 128, 0.05)"
+          >
+            <td class="px-5 py-4">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
+                  style="
+                    background: rgba(34, 197, 94, 0.1);
+                    border: 1px solid rgba(74, 222, 128, 0.2);
+                  "
+                >
+                  <img
+                    *ngIf="item.imagePath"
+                    [src]="item.imagePath"
+                    class="w-full h-full object-cover"
+                  />
+                  <span *ngIf="!item.imagePath">📦</span>
+                </div>
+                <div>
+                  <p class="text-sm font-black text-white">{{ item.cropName }}</p>
+                  <p class="text-xs" style="color: rgba(255, 255, 255, 0.3)">
+                    SKU: #{{ item.productId }}
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td class="px-5 py-4 text-xs font-bold" style="color: rgba(255, 255, 255, 0.5)">
+              📍 {{ item.location }}
+            </td>
+            <td class="px-5 py-4 text-sm font-black" style="color: #4ade80">
+              ₹{{ item.value | number }}
+            </td>
+            <td class="px-5 py-4 text-xs" style="color: rgba(255, 255, 255, 0.4)">
+              {{ item.timestamp | date: 'MMM d, y' }}
+            </td>
+            <td class="px-5 py-4 text-right">
+              <button
+                (click)="openDispatch(item)"
+                class="text-xs px-3 py-1.5 rounded-xl font-black text-white transition-all"
+                style="background: linear-gradient(135deg, #22c55e, #15803d)"
+              >
+                ⚡ Dispatch Now
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="filteredItems.length === 0">
+            <td colspan="5" class="px-5 py-12 text-center">
+              <div class="text-4xl mb-2">📦</div>
+              <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.3)">
+                No items available for dispatch
+              </p>
+              <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.2)">
+                Go to Inventory or Procurement to add items
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

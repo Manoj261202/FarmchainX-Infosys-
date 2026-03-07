@@ -1,0 +1,214 @@
+<div class="min-h-screen pb-12" style="background: transparent">
+  <!-- Header -->
+  <div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        📋
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">Purchase Orders</h2>
+        <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">
+          Manage your procurement pipeline
+        </p>
+      </div>
+    </div>
+    <button
+      (click)="openCreateModal()"
+      class="px-4 py-2 rounded-xl text-xs font-black text-white transition-all"
+      style="background: linear-gradient(135deg, #22c55e, #15803d)"
+    >
+      + Create PO
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div
+    *ngIf="orders.length > 0; else emptyState"
+    class="rounded-2xl overflow-hidden"
+    style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+  >
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)">
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              PO ID
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Supplier
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Created
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Items
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Total
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Status
+            </th>
+            <th
+              class="px-5 py-3 text-xs font-black uppercase tracking-wider"
+              style="color: rgba(255, 255, 255, 0.35)"
+            >
+              Action
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of orders" style="border-bottom: 1px solid rgba(74, 222, 128, 0.05)">
+            <td class="px-5 py-3 text-xs font-black text-white">{{ o.id }}</td>
+            <td class="px-5 py-3 text-xs" style="color: rgba(255, 255, 255, 0.6)">
+              {{ o.supplier }}
+            </td>
+            <td class="px-5 py-3 text-xs" style="color: rgba(255, 255, 255, 0.5)">
+              {{ o.createdAt | date: 'mediumDate' }}
+            </td>
+            <td class="px-5 py-3 text-xs" style="color: rgba(255, 255, 255, 0.6)">{{ o.items }}</td>
+            <td class="px-5 py-3 text-xs font-black" style="color: #4ade80">₹{{ o.total }}</td>
+            <td class="px-5 py-3">
+              <span
+                class="px-2 py-1 rounded-full text-xs font-black"
+                [ngClass]="statusClass(o.status)"
+              >
+                {{ o.status }}
+              </span>
+            </td>
+            <td class="px-5 py-3">
+              <button
+                (click)="view(o)"
+                class="px-3 py-1.5 rounded-xl text-xs font-black transition-all"
+                style="
+                  background: rgba(6, 182, 212, 0.1);
+                  border: 1px solid rgba(6, 182, 212, 0.3);
+                  color: #67e8f9;
+                "
+              >
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div
+      class="text-center py-16 rounded-2xl"
+      style="background: rgba(3, 18, 8, 0.5); border: 1px dashed rgba(74, 222, 128, 0.2)"
+    >
+      <div class="text-4xl mb-2">📋</div>
+      <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.3)">
+        No purchase orders found.
+      </p>
+      <button
+        class="mt-3 px-4 py-2 rounded-xl text-xs font-black text-white"
+        style="background: linear-gradient(135deg, #22c55e, #15803d)"
+      >
+        Create First PO
+      </button>
+    </div>
+  </ng-template>
+</div>
+
+<!-- Create PO Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 z-50 flex items-center justify-center"
+  style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px)"
+  (click)="closeCreateModal()"
+>
+  <div
+    class="rounded-2xl p-6 max-w-lg w-full mx-4"
+    style="background: rgba(3, 18, 8, 0.98); border: 1px solid rgba(74, 222, 128, 0.3)"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex justify-between items-center mb-5">
+      <h3 class="font-black text-white text-sm">Create Purchase Order</h3>
+      <button (click)="closeCreateModal()" class="text-lg" style="color: rgba(255, 255, 255, 0.4)">
+        &times;
+      </button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label
+          class="text-xs font-black uppercase tracking-wider mb-1 block"
+          style="color: rgba(255, 255, 255, 0.4)"
+          >Supplier ID / Name</label
+        >
+        <input
+          [(ngModel)]="newOrder.supplierId"
+          type="text"
+          class="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none"
+          style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(74, 222, 128, 0.2)"
+        />
+      </div>
+      <div>
+        <label
+          class="text-xs font-black uppercase tracking-wider mb-1 block"
+          style="color: rgba(255, 255, 255, 0.4)"
+          >Items (Quantity)</label
+        >
+        <input
+          [(ngModel)]="newOrder.items"
+          type="number"
+          class="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none"
+          style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(74, 222, 128, 0.2)"
+        />
+      </div>
+      <div>
+        <label
+          class="text-xs font-black uppercase tracking-wider mb-1 block"
+          style="color: rgba(255, 255, 255, 0.4)"
+          >Estimated Total (₹)</label
+        >
+        <input
+          [(ngModel)]="newOrder.total"
+          type="number"
+          class="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none"
+          style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(74, 222, 128, 0.2)"
+        />
+      </div>
+    </div>
+    <div class="mt-5 flex justify-end gap-3">
+      <button
+        (click)="closeCreateModal()"
+        class="px-4 py-2 rounded-xl text-xs font-black transition-all"
+        style="background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.6)"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="createOrder()"
+        class="px-5 py-2 rounded-xl text-xs font-black text-white transition-all"
+        style="background: linear-gradient(135deg, #22c55e, #15803d)"
+      >
+        Create Order
+      </button>
+    </div>
+  </div>
+</div>

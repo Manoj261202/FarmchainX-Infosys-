@@ -1,0 +1,114 @@
+<aside
+  class="w-64 h-full flex flex-col"
+  style="background: rgba(2, 10, 4, 0.95); border-right: 1px solid rgba(74, 222, 128, 0.15)"
+>
+  <!-- Logo -->
+  <div
+    class="p-5 flex items-center gap-3"
+    style="border-bottom: 1px solid rgba(74, 222, 128, 0.12)"
+  >
+    <div
+      class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+      style="
+        background: linear-gradient(135deg, #22c55e, #14532d);
+        box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      "
+    >
+      🌿
+    </div>
+    <div>
+      <div class="text-sm font-black text-white">FarmChainX</div>
+      <div class="text-xs" style="color: #4ade80">Consumer Portal</div>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="flex-1 overflow-y-auto px-3 py-4">
+    <nav class="space-y-1">
+      <a
+        routerLink="/consumer/dashboard"
+        routerLinkActive="active-nav"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">🏠</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        routerLink="/consumer/marketplace"
+        routerLinkActive="active-nav"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">🛒</span>
+        <span>Marketplace</span>
+      </a>
+
+      <a
+        routerLink="/consumer/retailers-inventory"
+        routerLinkActive="active-nav"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">🏪</span>
+        <span>Retailers Inventory</span>
+      </a>
+
+      <a
+        routerLink="/consumer/history"
+        routerLinkActive="active-nav"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">📋</span>
+        <span>Provenance History</span>
+      </a>
+
+      <a
+        routerLink="/consumer/notifications"
+        routerLinkActive="active-nav"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">🔔</span>
+        <span>Notifications</span>
+      </a>
+
+      <a
+        routerLink="/consumer/verify"
+        routerLinkActive="active-nav"
+        class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+        style="color: rgba(255, 255, 255, 0.55)"
+      >
+        <span class="text-base">🛡️</span>
+        <span>Verify Product</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Exit -->
+  <div class="p-3" style="border-top: 1px solid rgba(74, 222, 128, 0.12)">
+    <a
+      routerLink="/dashboard"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 font-semibold text-sm"
+      style="color: rgba(255, 255, 255, 0.4)"
+    >
+      <span class="text-base">🚪</span>
+      <span>Exit Dashboard</span>
+    </a>
+  </div>
+</aside>
+
+<style>
+  .active-nav {
+    background: rgba(34, 197, 94, 0.15) !important;
+    color: #4ade80 !important;
+    border: 1px solid rgba(74, 222, 128, 0.25);
+  }
+  .nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+</style>

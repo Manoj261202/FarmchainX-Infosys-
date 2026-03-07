@@ -1,0 +1,117 @@
+<div class="flex h-screen overflow-hidden" style="background: #020c05">
+  <!-- Farm Background -->
+  <div
+    class="fixed inset-0 z-0"
+    style="
+      background-image:
+        linear-gradient(
+          to bottom,
+          rgba(0, 20, 8, 0.85) 0%,
+          rgba(0, 15, 6, 0.9) 50%,
+          rgba(0, 10, 4, 0.97) 100%
+        ),
+        url('farmpic1.jpg');
+      background-size: cover;
+      background-position: center;
+    "
+  ></div>
+
+  <!-- Desktop Sidebar -->
+  <app-consumer-sidebar class="hidden lg:flex relative z-10"></app-consumer-sidebar>
+
+  <div class="flex-1 flex flex-col overflow-y-auto relative z-10">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-40"
+      style="
+        background: rgba(3, 18, 8, 0.85);
+        border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+        backdrop-filter: blur(20px);
+      "
+    >
+      <div class="px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button
+              (click)="toggleSidebar()"
+              class="p-2 rounded-xl transition lg:hidden"
+              style="color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.06)"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-xl font-black text-white">Consumer Dashboard</h1>
+              <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.35)">
+                Welcome back,
+                <span style="color: #4ade80; font-weight: 700">{{ currentConsumerName() }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div
+              class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"
+              style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(74, 222, 128, 0.25)"
+            >
+              <div class="relative">
+                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                <div
+                  class="w-2 h-2 bg-green-400 rounded-full absolute inset-0 animate-ping opacity-75"
+                ></div>
+              </div>
+              <span class="text-xs font-bold" style="color: #4ade80">Operational</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      style="background: rgba(3, 18, 8, 0.85); border-top: 1px solid rgba(74, 222, 128, 0.1)"
+      class="px-4 sm:px-6 lg:px-8 py-3"
+    >
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-xs" style="color: rgba(255, 255, 255, 0.25)">
+          © 2025 <span style="color: #4ade80; font-weight: 700">FarmChainX</span>
+        </p>
+        <div class="flex items-center gap-4 text-xs" style="color: rgba(255, 255, 255, 0.25)">
+          <a href="#" style="color: rgba(255, 255, 255, 0.25)">Documentation</a>
+          <span>•</span>
+          <a href="#" style="color: rgba(255, 255, 255, 0.25)">Support</a>
+          <span>•</span>
+          <a href="#" style="color: rgba(255, 255, 255, 0.25)">Privacy</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div *ngIf="sidebarOpen" class="fixed inset-0 z-50 lg:hidden" (click)="toggleSidebar()">
+    <div
+      class="absolute inset-0"
+      style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px)"
+    ></div>
+    <div
+      class="absolute left-0 top-0 h-full w-80 shadow-2xl"
+      (click)="$event.stopPropagation()"
+      style="background: rgba(3, 18, 8, 0.98); border-right: 1px solid rgba(74, 222, 128, 0.2)"
+    >
+      <app-consumer-sidebar></app-consumer-sidebar>
+    </div>
+  </div>
+</div>

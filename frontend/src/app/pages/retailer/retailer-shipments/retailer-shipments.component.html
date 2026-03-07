@@ -1,0 +1,305 @@
+<div class="min-h-screen pb-12" style="background: transparent">
+  <!-- Dispatch Offers -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        📡
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">Shipments</h2>
+        <p class="text-xs" style="color: rgba(255, 255, 255, 0.35)">
+          Dispatch offers and incoming shipments
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="rounded-2xl p-5 mb-6"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-black text-white text-sm">📡 Available Dispatch Offers</h3>
+        <span class="text-xs" style="color: rgba(255, 255, 255, 0.3)"
+          >From distributors - first come, first served</span
+        >
+      </div>
+
+      <div *ngIf="offersLoading" class="text-center py-6">
+        <div
+          class="animate-spin rounded-full h-8 w-8 border-4 border-t-transparent mx-auto"
+          style="border-color: rgba(74, 222, 128, 0.3); border-top-color: #4ade80"
+        ></div>
+      </div>
+
+      <div *ngIf="!offersLoading && dispatchOffers.length > 0" class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)">
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Product
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Distributor
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Location
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Price
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Offered At
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let offer of dispatchOffers"
+              style="border-bottom: 1px solid rgba(74, 222, 128, 0.05)"
+            >
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
+                    style="
+                      background: rgba(34, 197, 94, 0.1);
+                      border: 1px solid rgba(74, 222, 128, 0.2);
+                    "
+                  >
+                    <img
+                      *ngIf="offer.imagePath"
+                      [src]="offer.imagePath"
+                      class="w-full h-full object-cover"
+                    />
+                    <span *ngIf="!offer.imagePath">📦</span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-black text-white">{{ offer.cropName || 'Unknown' }}</p>
+                    <p class="text-xs" style="color: rgba(255, 255, 255, 0.3)">
+                      {{ offer.qualityGrade || 'N/A' }}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-3 text-xs font-bold text-white">
+                {{ offer.distributorName || 'Unknown' }}
+              </td>
+              <td class="px-4 py-3 text-xs" style="color: rgba(255, 255, 255, 0.5)">
+                {{ offer.location }}
+              </td>
+              <td class="px-4 py-3 text-xs font-black" style="color: #4ade80">
+                ₹{{ offer.price || 0 }}
+              </td>
+              <td class="px-4 py-3 text-xs" style="color: rgba(255, 255, 255, 0.4)">
+                {{ offer.createdAt | date: 'short' }}
+              </td>
+              <td class="px-4 py-3">
+                <button
+                  (click)="acceptOffer(offer)"
+                  class="px-3 py-1.5 rounded-xl text-xs font-black text-white transition-all"
+                  style="background: linear-gradient(135deg, #22c55e, #15803d)"
+                >
+                  Accept
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="!offersLoading && dispatchOffers.length === 0" class="text-center py-8">
+        <p class="text-xs font-bold" style="color: rgba(255, 255, 255, 0.3)">
+          No dispatch offers available at the moment.
+        </p>
+      </div>
+    </div>
+
+    <!-- Incoming Shipments -->
+    <div
+      class="rounded-2xl p-5"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-black text-white text-sm">🚛 Incoming Shipments</h3>
+        <span class="text-xs" style="color: rgba(255, 255, 255, 0.3)"
+          >Items pending your confirmation</span
+        >
+      </div>
+
+      <div *ngIf="loading" class="text-center py-6">
+        <div
+          class="animate-spin rounded-full h-8 w-8 border-4 border-t-transparent mx-auto"
+          style="border-color: rgba(74, 222, 128, 0.3); border-top-color: #4ade80"
+        ></div>
+      </div>
+
+      <div *ngIf="!loading && shipments.length > 0; else emptyShipments" class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+            <tr style="border-bottom: 1px solid rgba(74, 222, 128, 0.08)">
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Product ID
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                From Distributor
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Date
+              </th>
+              <th
+                class="px-4 py-3 text-left text-xs font-black uppercase tracking-wider"
+                style="color: rgba(255, 255, 255, 0.35)"
+              >
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let s of shipments"
+              style="border-bottom: 1px solid rgba(74, 222, 128, 0.05)"
+            >
+              <td class="px-4 py-3 text-xs font-black text-white">#{{ s.productId }}</td>
+              <td class="px-4 py-3 text-xs" style="color: rgba(255, 255, 255, 0.6)">
+                {{ s.createdBy }}
+              </td>
+              <td class="px-4 py-3 text-xs" style="color: rgba(255, 255, 255, 0.4)">
+                {{ s.timestamp | date: 'medium' }}
+              </td>
+              <td class="px-4 py-3">
+                <button
+                  *ngIf="verifyingId !== s.productId"
+                  (click)="startVerification(s.productId)"
+                  class="px-3 py-1.5 rounded-xl text-xs font-black transition-all"
+                  style="
+                    background: rgba(99, 102, 241, 0.1);
+                    border: 1px solid rgba(99, 102, 241, 0.3);
+                    color: #a5b4fc;
+                  "
+                >
+                  Verify
+                </button>
+
+                <!-- Verification Modal -->
+                <div
+                  *ngIf="verifyingId === s.productId"
+                  class="fixed inset-0 z-50 flex items-center justify-center"
+                  style="background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px)"
+                  (click)="cancelVerification()"
+                >
+                  <div
+                    class="rounded-2xl p-6 max-w-md w-full mx-4"
+                    style="
+                      background: rgba(3, 18, 8, 0.98);
+                      border: 1px solid rgba(74, 222, 128, 0.3);
+                    "
+                    (click)="$event.stopPropagation()"
+                  >
+                    <div class="flex justify-between items-center mb-4">
+                      <h3 class="font-black text-white text-sm">
+                        Verify Shipment #{{ s.productId }}
+                      </h3>
+                      <button
+                        (click)="cancelVerification()"
+                        style="color: rgba(255, 255, 255, 0.4)"
+                        class="text-lg"
+                      >
+                        &times;
+                      </button>
+                    </div>
+                    <div
+                      class="rounded-xl p-4 mb-4"
+                      style="
+                        background: rgba(6, 182, 212, 0.08);
+                        border: 1px solid rgba(6, 182, 212, 0.2);
+                      "
+                    >
+                      <p class="text-xs font-black mb-1" style="color: #67e8f9">
+                        Verification Required
+                      </p>
+                      <p class="text-xs" style="color: rgba(255, 255, 255, 0.5)">
+                        Please inspect the physical goods before confirming receipt on the Database.
+                      </p>
+                    </div>
+                    <div class="flex items-center gap-3 mb-5">
+                      <input
+                        id="verify-goods"
+                        type="checkbox"
+                        [(ngModel)]="verificationChecked"
+                        class="h-4 w-4 rounded"
+                      />
+                      <label for="verify-goods" class="text-xs font-bold text-white">
+                        I verify that the physical goods have been received.
+                      </label>
+                    </div>
+                    <div class="flex justify-end gap-3">
+                      <button
+                        (click)="cancelVerification()"
+                        class="px-4 py-2 rounded-xl text-xs font-black transition-all"
+                        style="
+                          background: rgba(255, 255, 255, 0.06);
+                          color: rgba(255, 255, 255, 0.6);
+                        "
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        (click)="confirmReceipt(s)"
+                        [disabled]="!verificationChecked"
+                        class="px-4 py-2 rounded-xl text-xs font-black text-white transition-all disabled:opacity-40"
+                        style="background: linear-gradient(135deg, #22c55e, #15803d)"
+                      >
+                        Confirm Digital Receipt
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #emptyShipments>
+        <div class="text-center py-8" *ngIf="!loading">
+          <p class="text-xs font-bold" style="color: rgba(255, 255, 255, 0.3)">
+            No pending shipments found.
+          </p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

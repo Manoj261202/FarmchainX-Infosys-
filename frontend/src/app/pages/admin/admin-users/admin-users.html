@@ -1,0 +1,149 @@
+<div style="min-height: 100%; background: transparent">
+  <!-- Page Header -->
+  <div class="mb-6">
+    <div class="flex items-center gap-3 mb-1">
+      <div
+        class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        👥
+      </div>
+      <h2 class="text-2xl font-black text-white">User Management</h2>
+    </div>
+    <p class="text-sm" style="color: rgba(255, 255, 255, 0.35)">
+      Manage platform roles and permissions for all active accounts
+    </p>
+  </div>
+
+  <!-- Search Bar -->
+  <div
+    class="flex items-center gap-4 rounded-2xl px-5 py-4 mb-5"
+    style="background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(74, 222, 128, 0.18)"
+  >
+    <input
+      class="flex-1 rounded-xl px-4 py-2.5 text-sm text-white outline-none"
+      style="background: rgba(255, 255, 255, 0.06); border: 1.5px solid rgba(74, 222, 128, 0.18)"
+      placeholder="🔍  Search users by name, email or role..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearch()"
+    />
+    <span class="text-xs font-bold whitespace-nowrap" style="color: #4ade80">
+      {{ filteredUsers.length }} user{{ filteredUsers.length !== 1 ? 's' : '' }} found
+    </span>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex items-center justify-center py-20">
+    <div class="text-center">
+      <div class="text-4xl mb-3">🌿</div>
+      <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.4)">Loading users...</p>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div
+    *ngIf="!isLoading"
+    class="rounded-2xl overflow-hidden"
+    style="background: rgba(3, 18, 8, 0.6); border: 1px solid rgba(74, 222, 128, 0.12)"
+  >
+    <!-- Table Header -->
+    <div
+      class="grid grid-cols-4 px-5 py-3"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.1)"
+    >
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Name
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest col-span-2"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Email
+      </div>
+      <div
+        class="text-xs font-black uppercase tracking-widest"
+        style="color: rgba(255, 255, 255, 0.3)"
+      >
+        Role & Action
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredUsers.length === 0" class="text-center py-16">
+      <div class="text-5xl mb-3 opacity-30">👥</div>
+      <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.3)">No users found</p>
+      <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.2)">
+        Try a different search term
+      </p>
+    </div>
+
+    <!-- Table Rows -->
+    <div
+      *ngFor="let user of filteredUsers"
+      class="grid grid-cols-4 px-5 py-4 items-center transition-all duration-200"
+      style="border-bottom: 1px solid rgba(74, 222, 128, 0.06)"
+    >
+      <!-- Name -->
+      <div class="text-sm font-bold text-white">{{ user.name }}</div>
+
+      <!-- Email -->
+      <div class="col-span-2 text-sm" style="color: rgba(255, 255, 255, 0.45)">
+        {{ user.email }}
+      </div>
+
+      <!-- Role + Action -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <span
+          class="px-3 py-1 rounded-full text-xs font-black"
+          [ngClass]="{
+            'role-admin': user.primaryRole === 'ADMIN',
+            'role-farmer': user.primaryRole === 'FARMER',
+            'role-distributor': user.primaryRole === 'DISTRIBUTOR',
+            'role-retailer': user.primaryRole === 'RETAILER',
+            'role-consumer': user.primaryRole === 'CONSUMER',
+            'role-user': user.primaryRole === 'USER',
+          }"
+          >{{ user.primaryRole }}</span
+        >
+
+        <span *ngIf="user.isAdmin" class="text-xs" style="color: rgba(255, 255, 255, 0.2)">—</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .role-admin {
+    background: rgba(139, 92, 246, 0.2);
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+  .role-farmer {
+    background: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+  .role-distributor {
+    background: rgba(6, 182, 212, 0.15);
+    color: #67e8f9;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+  }
+  .role-retailer {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+  .role-consumer {
+    background: rgba(59, 130, 246, 0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+  .role-user {
+    background: rgba(107, 114, 128, 0.15);
+    color: #d1d5db;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+  }
+</style>

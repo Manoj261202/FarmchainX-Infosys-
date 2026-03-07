@@ -1,0 +1,572 @@
+<div
+  class="min-h-screen pb-12"
+  style="
+    background:
+      linear-gradient(to bottom, rgba(0, 20, 8, 0.92), rgba(0, 10, 4, 0.97)),
+      url('farmpic1.jpg') center/cover fixed;
+  "
+>
+  <div class="max-w-3xl mx-auto px-4 py-10">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <div
+        class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3"
+        style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+      >
+        🌾
+      </div>
+      <h1 class="text-3xl font-black text-white mb-1">Register New Product</h1>
+      <p class="text-sm" style="color: rgba(255, 255, 255, 0.4)">
+        Add your agricultural product to the blockchain-verified registry
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div
+      class="rounded-2xl overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <form (ngSubmit)="uploadProduct()" class="p-6 space-y-5">
+        <!-- Crop Name -->
+        <div>
+          <label
+            class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+            style="color: rgba(255, 255, 255, 0.4)"
+          >
+            Crop Name <span style="color: #fca5a5">*</span>
+          </label>
+          <input
+            [(ngModel)]="cropName"
+            name="cropName"
+            required
+            placeholder="e.g., Basmati Rice, Red Onion, Organic Tomato"
+            class="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+            style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(74, 222, 128, 0.2)"
+          />
+        </div>
+
+        <!-- Soil & Pesticides -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+              style="color: rgba(255, 255, 255, 0.4)"
+              >Soil Type</label
+            >
+            <input
+              [(ngModel)]="soilType"
+              name="soilType"
+              placeholder="e.g., Loamy, Red Soil, Clay"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(74, 222, 128, 0.2);
+              "
+            />
+          </div>
+          <div>
+            <label
+              class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+              style="color: rgba(255, 255, 255, 0.4)"
+              >Pesticides Used</label
+            >
+            <input
+              [(ngModel)]="pesticides"
+              name="pesticides"
+              placeholder="e.g., None, Neem Oil, Organic"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(74, 222, 128, 0.2);
+              "
+            />
+          </div>
+        </div>
+
+        <!-- Price, Quantity, Unit -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label
+              class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+              style="color: rgba(255, 255, 255, 0.4)"
+              >Price (₹/kg) <span style="color: #fca5a5">*</span></label
+            >
+            <input
+              type="number"
+              [(ngModel)]="price"
+              name="price"
+              required
+              min="1"
+              placeholder="e.g., 150"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(74, 222, 128, 0.2);
+              "
+            />
+          </div>
+          <div>
+            <label
+              class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+              style="color: rgba(255, 255, 255, 0.4)"
+              >Quantity <span style="color: #fca5a5">*</span></label
+            >
+            <input
+              type="number"
+              [(ngModel)]="quantity"
+              name="quantity"
+              required
+              min="1"
+              placeholder="e.g., 1000"
+              class="w-full px-4 py-3 rounded-xl text-sm text-white outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(74, 222, 128, 0.2);
+              "
+            />
+          </div>
+          <div>
+            <label
+              class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+              style="color: rgba(255, 255, 255, 0.4)"
+              >Unit <span style="color: #fca5a5">*</span></label
+            >
+            <select
+              [(ngModel)]="quantityUnit"
+              name="quantityUnit"
+              required
+              class="w-full px-4 py-3 rounded-xl text-sm outline-none"
+              style="
+                background: rgba(3, 18, 8, 0.9);
+                border: 1px solid rgba(74, 222, 128, 0.2);
+                color: rgba(255, 255, 255, 0.7);
+              "
+            >
+              <option value="kg">Kilograms (kg)</option>
+              <option value="units">Units</option>
+              <option value="tons">Tons</option>
+              <option value="quintals">Quintals</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Harvest Date -->
+        <div>
+          <label
+            class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+            style="color: rgba(255, 255, 255, 0.4)"
+            >Harvest Date <span style="color: #fca5a5">*</span></label
+          >
+          <input
+            type="date"
+            [(ngModel)]="harvestDate"
+            name="harvestDate"
+            [max]="today"
+            required
+            class="w-full px-4 py-3 rounded-xl text-sm outline-none"
+            style="
+              background: rgba(255, 255, 255, 0.06);
+              border: 1px solid rgba(74, 222, 128, 0.2);
+              color: rgba(255, 255, 255, 0.7);
+            "
+          />
+        </div>
+
+        <!-- GPS Location -->
+        <div>
+          <label
+            class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+            style="color: rgba(255, 255, 255, 0.4)"
+            >GPS Location</label
+          >
+          <div class="flex gap-3">
+            <input
+              [(ngModel)]="gpsLocation"
+              name="gpsLocation"
+              readonly
+              placeholder="Click button to auto-detect location"
+              class="flex-1 px-4 py-3 rounded-xl text-sm text-white outline-none"
+              style="
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid rgba(74, 222, 128, 0.15);
+                color: rgba(255, 255, 255, 0.6);
+              "
+            />
+            <button
+              type="button"
+              (click)="detectGPS()"
+              [disabled]="loading"
+              class="px-5 py-3 rounded-xl text-xs font-black text-white transition-all disabled:opacity-50 whitespace-nowrap"
+              style="background: linear-gradient(135deg, #22c55e, #15803d)"
+            >
+              📍 Detect GPS
+            </button>
+          </div>
+          <p class="text-xs mt-1" style="color: rgba(255, 255, 255, 0.25)">
+            GPS coordinates will be recorded for product authenticity
+          </p>
+        </div>
+
+        <!-- Image Upload -->
+        <div>
+          <label
+            class="text-xs font-black uppercase tracking-wider mb-1.5 block"
+            style="color: rgba(255, 255, 255, 0.4)"
+            >Product Image <span style="color: #fca5a5">*</span></label
+          >
+          <div
+            class="rounded-xl p-6 text-center cursor-pointer transition-all"
+            style="
+              border: 2px dashed rgba(74, 222, 128, 0.25);
+              background: rgba(255, 255, 255, 0.03);
+            "
+          >
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              required
+              id="fileInput"
+              class="hidden"
+            />
+            <label for="fileInput" class="cursor-pointer">
+              <div class="flex flex-col items-center gap-2">
+                <div
+                  class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                  style="background: rgba(34, 197, 94, 0.1)"
+                >
+                  📷
+                </div>
+                <p class="text-sm font-bold text-white">Click to upload product image</p>
+                <p class="text-xs" style="color: rgba(255, 255, 255, 0.3)">PNG, JPG up to 10MB</p>
+              </div>
+            </label>
+          </div>
+
+          <!-- Preview -->
+          <div
+            *ngIf="previewUrl"
+            class="mt-4 rounded-xl p-4"
+            style="background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(74, 222, 128, 0.2)"
+          >
+            <div class="flex items-center gap-4">
+              <img
+                [src]="previewUrl"
+                class="w-20 h-20 object-cover rounded-xl"
+                style="border: 2px solid rgba(74, 222, 128, 0.3)"
+              />
+              <div>
+                <p class="text-sm font-black" style="color: #4ade80">
+                  ✅ Image uploaded successfully
+                </p>
+                <p class="text-xs mt-0.5" style="color: rgba(255, 255, 255, 0.4)">
+                  Your product image is ready for registration
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info Box -->
+        <div
+          class="rounded-xl p-4"
+          style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2)"
+        >
+          <p class="text-xs font-black mb-1" style="color: #67e8f9">🔗 Database Registration</p>
+          <p class="text-xs" style="color: rgba(255, 255, 255, 0.5)">
+            Your product will be registered on the Database with a unique QR code for verification
+            and traceability.
+          </p>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="loading || !imageFile"
+          class="w-full py-4 rounded-xl text-sm font-black text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+          style="background: linear-gradient(135deg, #22c55e, #15803d)"
+        >
+          <svg *ngIf="loading" class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            ></path>
+          </svg>
+          <span>{{
+            loading ? 'Registering Product...' : '🌾 Register Product & Generate QR'
+          }}</span>
+        </button>
+
+        <p class="text-center text-xs" style="color: rgba(255, 255, 255, 0.25)">
+          <span style="color: #fca5a5">*</span> Required fields
+        </p>
+      </form>
+    </div>
+
+    <p class="text-center text-xs mt-6" style="color: rgba(255, 255, 255, 0.25)">
+      Secured by <span style="color: #4ade80">FarmChainX</span> Hashing Technology
+    </p>
+  </div>
+
+  <!-- AI Prediction Modal -->
+  <div
+    *ngIf="showPrediction && aiPrediction"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4"
+    style="background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px)"
+    (click)="closePredictionModal()"
+  >
+    <div
+      class="rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+      style="background: rgba(3, 18, 8, 0.98); border: 1px solid rgba(74, 222, 128, 0.3)"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- Modal Header -->
+      <div
+        class="p-5 flex items-center justify-between sticky top-0 z-10"
+        style="
+          background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(20, 83, 45, 0.3));
+          border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+        "
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+            style="background: rgba(34, 197, 94, 0.2)"
+          >
+            🤖
+          </div>
+          <div>
+            <h2 class="text-lg font-black text-white">AI Quality Analysis</h2>
+            <p class="text-xs" style="color: rgba(255, 255, 255, 0.4)">Powered by Groq AI</p>
+          </div>
+        </div>
+        <button
+          (click)="closePredictionModal()"
+          class="text-xl"
+          style="color: rgba(255, 255, 255, 0.4)"
+        >
+          &times;
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <!-- Grade Card -->
+        <div
+          class="rounded-2xl p-5"
+          [style.background]="
+            getQualityColor(aiPrediction.qualityGrade) === 'emerald'
+              ? 'rgba(34,197,94,0.1)'
+              : getQualityColor(aiPrediction.qualityGrade) === 'yellow'
+                ? 'rgba(234,179,8,0.1)'
+                : 'rgba(251,146,60,0.1)'
+          "
+          [style.border]="
+            getQualityColor(aiPrediction.qualityGrade) === 'emerald'
+              ? '1px solid rgba(74,222,128,0.3)'
+              : getQualityColor(aiPrediction.qualityGrade) === 'yellow'
+                ? '1px solid rgba(253,224,71,0.3)'
+                : '1px solid rgba(251,146,60,0.3)'
+          "
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <p
+                class="text-xs font-black uppercase tracking-wider mb-1"
+                style="color: rgba(255, 255, 255, 0.4)"
+              >
+                Quality Grade
+              </p>
+              <p
+                class="text-5xl font-black"
+                [style.color]="
+                  getQualityColor(aiPrediction.qualityGrade) === 'emerald'
+                    ? '#4ade80'
+                    : getQualityColor(aiPrediction.qualityGrade) === 'yellow'
+                      ? '#fde047'
+                      : '#fdba74'
+                "
+              >
+                {{ aiPrediction.qualityGrade || 'N/A' }}
+              </p>
+            </div>
+            <div class="text-right">
+              <p
+                class="text-xs font-black uppercase tracking-wider mb-1"
+                style="color: rgba(255, 255, 255, 0.4)"
+              >
+                Score
+              </p>
+              <p class="text-4xl font-black text-white">
+                {{ aiPrediction.qualityScore || 0
+                }}<span class="text-xl" style="color: rgba(255, 255, 255, 0.4)">/100</span>
+              </p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <div class="flex justify-between text-xs mb-1">
+              <span style="color: rgba(255, 255, 255, 0.4)">AI Confidence</span>
+              <span class="font-black text-white">{{ aiPrediction.confidence || 85 }}%</span>
+            </div>
+            <div class="w-full rounded-full h-2" style="background: rgba(255, 255, 255, 0.1)">
+              <div
+                class="h-2 rounded-full transition-all duration-1000"
+                [style.width.%]="aiPrediction.confidence || 85"
+                [style.background]="
+                  getQualityColor(aiPrediction.qualityGrade) === 'emerald'
+                    ? '#4ade80'
+                    : getQualityColor(aiPrediction.qualityGrade) === 'yellow'
+                      ? '#fde047'
+                      : '#fdba74'
+                "
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insights Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div
+            class="rounded-xl p-4"
+            style="background: rgba(6, 182, 212, 0.08); border: 1px solid rgba(6, 182, 212, 0.2)"
+          >
+            <p class="text-xs font-black mb-1" style="color: #67e8f9">📋 Market Readiness</p>
+            <p class="text-xs text-white">
+              {{ aiPrediction.marketReadiness || 'Ready for market' }}
+            </p>
+          </div>
+          <div
+            class="rounded-xl p-4"
+            style="background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.2)"
+          >
+            <p class="text-xs font-black mb-1" style="color: #c4b5fd">💰 Price Estimate</p>
+            <p class="text-xs text-white">
+              {{ aiPrediction.priceEstimate || 'Market price varies' }}
+            </p>
+          </div>
+          <div
+            class="rounded-xl p-4"
+            style="background: rgba(251, 146, 60, 0.08); border: 1px solid rgba(251, 146, 60, 0.2)"
+          >
+            <p class="text-xs font-black mb-1" style="color: #fdba74">⏰ Selling Window</p>
+            <p class="text-xs text-white">
+              {{ aiPrediction.optimalSellingWindow || '1-3 days after harvest' }}
+            </p>
+          </div>
+          <div
+            class="rounded-xl p-4"
+            style="background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(74, 222, 128, 0.2)"
+          >
+            <p class="text-xs font-black mb-1" style="color: #4ade80">🏆 Certification</p>
+            <p class="text-xs text-white">
+              {{ aiPrediction.certificationEligibility || 'Conventional' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Storage -->
+        <div
+          class="rounded-xl p-4"
+          style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(74, 222, 128, 0.1)"
+        >
+          <p class="text-xs font-black mb-2 text-white">🏪 Storage Recommendation</p>
+          <p class="text-xs" style="color: rgba(255, 255, 255, 0.6)">
+            {{
+              aiPrediction.storageRecommendation ||
+                'Store in cool, dry place. Maintain proper ventilation.'
+            }}
+          </p>
+        </div>
+
+        <!-- AI Insights -->
+        <div
+          class="rounded-xl p-4"
+          style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2)"
+        >
+          <p class="text-xs font-black mb-3" style="color: #a5b4fc">💡 AI-Generated Insights</p>
+          <ul class="space-y-2" *ngIf="aiPrediction.insights && aiPrediction.insights.length > 0">
+            <li
+              *ngFor="let insight of aiPrediction.insights"
+              class="flex items-start gap-2 text-xs text-white"
+            >
+              <span style="color: #4ade80">✅</span>
+              <span>{{ insight }}</span>
+            </li>
+          </ul>
+          <p
+            *ngIf="!aiPrediction.insights || aiPrediction.insights.length === 0"
+            class="text-xs"
+            style="color: rgba(255, 255, 255, 0.5)"
+          >
+            Product appears to be in good condition. Monitor storage conditions regularly.
+          </p>
+        </div>
+
+        <!-- Warnings -->
+        <div
+          *ngIf="aiPrediction.warnings && aiPrediction.warnings.length > 0"
+          class="rounded-xl p-4"
+          style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(253, 224, 71, 0.25)"
+        >
+          <p class="text-xs font-black mb-2" style="color: #fde047">⚠️ Important Warnings</p>
+          <ul class="space-y-1">
+            <li
+              *ngFor="let warning of aiPrediction.warnings"
+              class="text-xs"
+              style="color: rgba(255, 255, 255, 0.6)"
+            >
+              • {{ warning }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- QR Code -->
+        <div
+          *ngIf="qrCodeUrl"
+          class="rounded-xl p-5 text-center"
+          style="background: rgba(255,255,255,0.04); border: 1px solid rgba(74,222,128,0.2)"
+        >
+          <p class="text-xs font-black uppercase tracking-wider mb-3" style="color: #4ade80">
+            🔲 Product QR Code
+          </p>
+          <div class="flex justify-center">
+            <img
+              [src]="qrCodeUrl"
+              alt="Product QR Code"
+              class="rounded-xl"
+              style="width: 180px; height: 180px; border: 2px solid rgba(74,222,128,0.3); background: #fff; padding: 6px;"
+            />
+          </div>
+          <p class="text-xs mt-3" style="color: rgba(255,255,255,0.4)">
+            Scan to verify product authenticity
+          </p>
+          <a
+            [href]="qrCodeUrl"
+            download="product-qr.png"
+            class="inline-block mt-3 px-4 py-2 rounded-lg text-xs font-black"
+            style="background: rgba(34,197,94,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80"
+          >
+            ⬇ Download QR
+          </a>
+        </div>
+
+        <!-- Action -->
+        <button
+          (click)="closePredictionModal()"
+          class="w-full py-3 rounded-xl text-sm font-black text-white transition-all"
+          style="background: linear-gradient(135deg, #22c55e, #15803d)"
+        >
+          View Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

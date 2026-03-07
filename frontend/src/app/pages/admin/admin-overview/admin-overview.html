@@ -1,0 +1,208 @@
+<div style="min-height: 100%; background: transparent">
+  <!-- Page Header -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-3 mb-1">
+          <div
+            class="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
+            style="background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(74, 222, 128, 0.3)"
+          >
+            📊
+          </div>
+          <h2 class="text-2xl font-black text-white">System Overview</h2>
+        </div>
+        <p class="text-sm" style="color: rgba(255, 255, 255, 0.35)">
+          Complete platform analytics and statistics
+        </p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs" style="color: rgba(255, 255, 255, 0.2)"
+          >Last updated: {{ lastUpdated | date: 'shortTime' }}</span
+        >
+        <button
+          (click)="refreshData()"
+          class="px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200"
+          style="
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.25);
+            color: #4ade80;
+          "
+        >
+          🔄 Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="flex items-center justify-center py-20">
+    <div class="text-center">
+      <div class="text-4xl mb-3">🌿</div>
+      <p class="text-sm font-bold" style="color: rgba(255, 255, 255, 0.4)">Loading data...</p>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div *ngIf="!isLoading" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Total Users -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #22c55e, #4ade80)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">👥</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Total Users
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.totalUsers ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Active accounts</div>
+    </div>
+
+    <!-- Total Products -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #14b8a6, #2dd4bf)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">📦</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Total Products
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.totalProducts ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">In supply chain</div>
+    </div>
+
+    <!-- Supply Logs -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #3b82f6, #60a5fa)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">📋</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Supply Logs
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.totalLogs ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Database entries</div>
+    </div>
+
+    <!-- Feedbacks -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #f59e0b, #fbbf24)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">⭐</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Feedbacks
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.totalFeedbacks ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Consumer reviews</div>
+    </div>
+
+    <!-- Sales Volume -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #ef4444, #f87171)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">💰</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Sales Volume
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ formatCurrency(data?.salesVolume) }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Total revenue</div>
+    </div>
+
+    <!-- Pending Orders -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #8b5cf6, #a78bfa)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">🕐</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Pending Orders
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.pendingOrders ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Awaiting processing</div>
+    </div>
+
+    <!-- New Users Today -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #06b6d4, #22d3ee)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">🆕</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        New Users Today
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ data?.newUsersToday ?? 0 }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Registered today</div>
+    </div>
+
+    <!-- Average Rating -->
+    <div
+      class="rounded-2xl p-5 relative overflow-hidden"
+      style="background: rgba(3, 18, 8, 0.7); border: 1px solid rgba(74, 222, 128, 0.15)"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
+        style="background: linear-gradient(90deg, #ec4899, #f472b6)"
+      ></div>
+      <div class="absolute top-4 right-4 text-2xl opacity-30">🏆</div>
+      <div
+        class="text-xs font-black uppercase tracking-widest mb-3"
+        style="color: rgba(255, 255, 255, 0.35)"
+      >
+        Average Rating
+      </div>
+      <div class="text-4xl font-black text-white mb-1">{{ formatRating(data?.averageRating) }}</div>
+      <div class="text-xs" style="color: rgba(255, 255, 255, 0.25)">Platform rating</div>
+    </div>
+  </div>
+</div>
