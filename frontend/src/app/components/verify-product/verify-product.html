@@ -114,12 +114,15 @@
             <span>⚖️</span> Available Quantity
           </p>
           <div class="flex items-baseline gap-2 mb-1">
-            <span class="text-2xl font-black" style="color:#4ade80">{{ (product.quantity | number:'1.0-0') || '—' }}</span>
+            <span class="text-2xl font-black" style="color:#4ade80">{{ (product.quantity | number:'1.0-0') || '0' }}</span>
             <span class="text-sm text-gray-400">{{ product.quantityUnit || 'kg' }} remaining</span>
-            <span class="ml-auto text-xs text-gray-500">of {{ (product.quantity | number:'1.0-0') || '—' }} {{ product.quantityUnit || 'kg' }} total</span>
+            <span class="ml-auto text-xs text-gray-500">of {{ (product.initialQuantity | number:'1.0-0') || (product.quantity | number:'1.0-0') || '0' }} {{ product.quantityUnit || 'kg' }} total</span>
           </div>
           <div class="w-full rounded-full h-1.5 bg-white/10">
-            <div class="h-1.5 rounded-full bg-green-500" style="width:100%"></div>
+            <div class="h-1.5 rounded-full transition-all duration-500"
+              [style.width]="((product.initialQuantity && product.initialQuantity > 0) ? ((product.quantity || 0) / product.initialQuantity * 100) : (product.quantity > 0 ? 100 : 0)) + '%'"
+              [style.background]="(product.quantity || 0) === 0 ? '#ef4444' : (product.quantity / (product.initialQuantity || product.quantity) < 0.3) ? '#f97316' : '#22c55e'"
+            ></div>
           </div>
           <p class="text-xs mt-1" style="color:rgba(255,255,255,0.3)">{{ product.currentStatus || 'In stock at farm' }}</p>
         </div>

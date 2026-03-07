@@ -131,6 +131,7 @@ public class ProductController {
             product.setPrice(price);
             product.setQuantity(quantity);
             product.setQuantityUnit(quantityUnit);
+            product.setInitialQuantity(quantity);
 
             // NEW: Auto-generate batch ID if not provided
             product.setBatchId("BATCH-" + System.currentTimeMillis());

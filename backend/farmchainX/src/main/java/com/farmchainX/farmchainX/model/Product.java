@@ -27,6 +27,9 @@ public class Product {
 	private Double quantity;
 	private String quantityUnit;
 
+	@Column(name = "initial_quantity")
+	private Double initialQuantity;
+
 	// NEW: Product lifecycle status
 	// CREATED, PROCURED, IN_DISTRIBUTOR_STOCK, DISPATCHED, IN_RETAILER_STOCK, SOLD
 	private String currentStatus;
@@ -173,6 +176,14 @@ public class Product {
 
 	public void setQuantityUnit(String quantityUnit) {
 		this.quantityUnit = quantityUnit;
+	}
+
+	public Double getInitialQuantity() {
+		return initialQuantity;
+	}
+
+	public void setInitialQuantity(Double initialQuantity) {
+		this.initialQuantity = initialQuantity;
 	}
 
 	// NEW: Getters and Setters for expiryDate
